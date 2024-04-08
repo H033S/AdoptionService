@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
+import static java.lang.StringTemplate.STR;
+
 public class Adoption extends Entity{
 
     @NotNull(message = "{validation.adoption.adopter.null}")
@@ -54,4 +56,8 @@ public class Adoption extends Entity{
     }
 
 
+    @Override
+    public String toString() {
+        return STR."\{getAdopter().getAdopterName()} adopted a \{getPet().getPetType()} called \{getPet().getPetName()} @\{getAdoptionDate()}";
+    }
 }

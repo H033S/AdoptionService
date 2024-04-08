@@ -34,10 +34,11 @@ public class AdoptionService {
         return adoptionDAO.delete(id);
     }
 
-    Adoption findAdoptionById(int id) {
+    public Adoption findAdoptionById(int id) {
         return adoptionDAO.findById(id);
     }
-    List<Adoption> findAllAdoptions() {
+
+    public List<Adoption> findAllAdoptions() {
         return adoptionDAO.findAll();
     }
     public List<Adopter> getAdoptersSortedBy(Comparator<Adoption> comparator) {
