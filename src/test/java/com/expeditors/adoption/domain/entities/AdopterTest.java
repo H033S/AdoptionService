@@ -1,19 +1,15 @@
-package com.nazmen.tech.adoption.domain.entities;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.UUID;
+package com.expeditors.adoption.domain.entities;
 
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AdopterTest {
     
     @Test
     public void createAdopter_ValidationReturnTrue_WithValidObject(){
         Adopter adopter = new Adopter(
-            UUID.randomUUID(), 
+            1,
             "Antonio Nazco", 
             "786-330-3040");
 
@@ -21,9 +17,9 @@ public class AdopterTest {
     }
 
     @Test 
-    public void createAdopter_ValidationReturnFalse_WithIncorrectPhoneNumer(){
+    public void createAdopter_ValidationReturnFalse_WithIncorrectPhoneNumber(){
         Adopter adopter = new Adopter(
-            UUID.randomUUID(), 
+            1,
             "Antonio Nazco", 
             "1232-12321");
 
@@ -34,7 +30,7 @@ public class AdopterTest {
     @Test 
     public void createAdopter_ValidationReturnFalse_WithIncorrectName(){
         Adopter adopter = new Adopter(
-            UUID.randomUUID(), 
+            1,
             "", 
             "786-768-1191");
 

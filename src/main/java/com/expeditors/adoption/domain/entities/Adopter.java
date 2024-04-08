@@ -1,10 +1,7 @@
-package com.nazmen.tech.adoption.domain.entities;
+package com.expeditors.adoption.domain.entities;
 
-import java.util.UUID;
-
-import com.nazmen.tech.adoption.domain.Entity;
-import com.nazmen.tech.adoption.domain.annottations.PhoneNumberPattern;
-
+import com.expeditors.adoption.domain.Entity;
+import com.expeditors.adoption.domain.annottations.PhoneNumberPattern;
 import jakarta.validation.constraints.Size;
 
 public class Adopter extends Entity {
@@ -17,7 +14,7 @@ public class Adopter extends Entity {
     private String phoneNumber;
 
     public Adopter(
-        UUID id,
+        int id,
         String adopterName, 
         String phoneNumber) {
         

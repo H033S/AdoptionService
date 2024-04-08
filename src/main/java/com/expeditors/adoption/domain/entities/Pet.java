@@ -1,9 +1,6 @@
-package com.nazmen.tech.adoption.domain.entities;
+package com.expeditors.adoption.domain.entities;
 
-import java.util.UUID;
-
-import com.nazmen.tech.adoption.domain.Entity;
-
+import com.expeditors.adoption.domain.Entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -21,7 +18,7 @@ public class Pet extends Entity{
 
 
     public Pet(
-        UUID id,
+        int id,
         PetBreed petBreed, 
         PetType petType, 
         String petName) {

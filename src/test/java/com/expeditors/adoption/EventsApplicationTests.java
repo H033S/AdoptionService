@@ -1,4 +1,4 @@
-package com.nazmen.tech.adoption;
+package com.expeditors.adoption;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

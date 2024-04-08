@@ -1,12 +1,10 @@
-package com.nazmen.tech.adoption.domain.entities;
+package com.expeditors.adoption.domain.entities;
 
-import java.time.LocalDate;
-import java.util.UUID;
-
-import com.nazmen.tech.adoption.domain.Entity;
-
+import com.expeditors.adoption.domain.Entity;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDate;
 
 public class Adoption extends Entity{
 
@@ -20,7 +18,7 @@ public class Adoption extends Entity{
     private LocalDate adoptionDate;
 
     public Adoption(
-        UUID id, 
+        int id,
         Adopter adopter, 
         Pet pet,
         LocalDate adoptionDate) {
@@ -29,6 +27,18 @@ public class Adoption extends Entity{
             this.adopter = adopter;
             this.pet = pet;
             this.adoptionDate = adoptionDate;
+    }
+
+    public void setAdopter(Adopter adopter) {
+        this.adopter = adopter;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
+
+    public void setAdoptionDate(LocalDate adoptionDate) {
+        this.adoptionDate = adoptionDate;
     }
 
     public Adopter getAdopter() {
@@ -42,5 +52,6 @@ public class Adoption extends Entity{
     public LocalDate getAdoptionDate() {
         return adoptionDate;
     }
-    
+
+
 }

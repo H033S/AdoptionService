@@ -1,4 +1,4 @@
-package com.nazmen.tech.adoption.domain.annottations;
+package com.expeditors.adoption.domain.annottations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -19,7 +19,7 @@ import jakarta.validation.constraints.Pattern;
 @Constraint(validatedBy = {})
 @Documented
 @Pattern(
-    regexp = "^\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}$", 
+    regexp = "^\\d{3}[-.\\s]\\d{3}[-.\\s]\\d{4}$",
     message = "{validation.phoneNumber.format.invalid}") 
 public @interface PhoneNumberPattern {    
 

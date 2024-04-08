@@ -1,4 +1,4 @@
-package com.nazmen.tech.adoption.domain;
+package com.expeditors.adoption.domain;
 
 import java.util.Set;
 

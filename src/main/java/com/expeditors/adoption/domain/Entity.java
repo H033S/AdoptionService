@@ -1,27 +1,26 @@
-package com.nazmen.tech.adoption.domain;
+package com.expeditors.adoption.domain;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
+
+import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 
 public abstract class Entity implements EntityValidable<Entity> {
 
     protected static Validator validator;
     
     @NotNull
-    protected UUID id;
+    protected int id;
 
     static {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
+        validator = buildDefaultValidatorFactory().getValidator();
     }
 
-    public Entity(UUID id) {
+    public Entity(int id) {
         this.id = id;
     }
 
@@ -36,11 +35,11 @@ public abstract class Entity implements EntityValidable<Entity> {
     }
 
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 }
