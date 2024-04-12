@@ -1,8 +1,6 @@
 package com.expeditors.adoption.domain;
 
 import java.util.Set;
-import java.util.UUID;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;

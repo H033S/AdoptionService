@@ -3,11 +3,12 @@ package com.expeditors.adoption.domain.entities;
 import com.expeditors.adoption.domain.Entity;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
-
+import lombok.Builder;
+import lombok.Data;
 import java.time.LocalDate;
 
-import static java.lang.StringTemplate.STR;
-
+@Data
+@Builder
 public class Adoption extends Entity{
 
     @NotNull(message = "{validation.adoption.adopter.null}")
@@ -19,45 +20,34 @@ public class Adoption extends Entity{
     @Future(message = "{validation.adoption.adoptionDate.past}")
     private LocalDate adoptionDate;
 
+
     public Adoption(
         int id,
-        Adopter adopter, 
+        Adopter Adopter,
         Pet pet,
         LocalDate adoptionDate) {
-            
-            super(id);
-            this.adopter = adopter;
-            this.pet = pet;
-            this.adoptionDate = adoptionDate;
-    }
-
-    public void setAdopter(Adopter adopter) {
+        
+        super(id);
         this.adopter = adopter;
-    }
-
-    public void setPet(Pet pet) {
         this.pet = pet;
-    }
-
-    public void setAdoptionDate(LocalDate adoptionDate) {
         this.adoptionDate = adoptionDate;
     }
 
-    public Adopter getAdopter() {
-        return adopter;
+    
+
+    public Adoption(
+        Adopter adopter,
+        Pet pet,
+        LocalDate adoptionDate) {
+
+            this(0, adopter, pet, adoptionDate);
     }
 
-    public Pet getPet() {
-        return pet;
-    }
-
-    public LocalDate getAdoptionDate() {
-        return adoptionDate;
-    }
-
-
+    
     @Override
     public String toString() {
-        return STR."\{getAdopter().getAdopterName()} adopted a \{getPet().getPetType()} called \{getPet().getPetName()} @\{getAdoptionDate()}";
+        return getAdopter().getAdopterName() + 
+        "adopted a" + getPet().getPetType() + 
+        "called" + getPet().getPetName() + getAdoptionDate();
     }
 }

@@ -16,4 +16,7 @@ public interface CrudDAO<TEntity extends Entity> {
     TEntity findById(int i);
 
     List<TEntity> findAll();
+
+    void clear();
+
 }

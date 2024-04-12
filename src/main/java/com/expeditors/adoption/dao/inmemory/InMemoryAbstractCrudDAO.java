@@ -47,4 +47,10 @@ public abstract class InMemoryAbstractCrudDAO <TEntity extends Entity> implement
         return entities.values().stream().toList();
     }
 
+    @Override
+    public void clear() {
+        nextId = 0;
+        entities.clear();
+    }
+
 }

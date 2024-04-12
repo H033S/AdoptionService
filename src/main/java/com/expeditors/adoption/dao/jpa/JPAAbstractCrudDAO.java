@@ -46,4 +46,12 @@ public abstract class JPAAbstractCrudDAO<TEntity extends Entity> implements Crud
         return entities.values().stream().toList();
     }
 
+    @Override
+    public void clear() {
+       nextId = 0;
+       entities.clear();
+    }
+
+    
+
 }

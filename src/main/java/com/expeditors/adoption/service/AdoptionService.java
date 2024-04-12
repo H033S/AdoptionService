@@ -64,4 +64,7 @@ public class AdoptionService {
                                                    .equalsIgnoreCase(name));
     }
 
+    public void clearAdoptions(){
+        adoptionDAO.clear();
+    }
 }

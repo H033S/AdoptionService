@@ -18,18 +18,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class AdoptionServiceTest {
 
+    @Autowired
     protected AdoptionService adoptionService;
+
     protected Adoption adoptionToAdd;
 
     @BeforeEach
     void setUp() {
         adoptionToAdd = TestFactory.getAdoptionInstance();
+        adoptionService.clearAdoptions();
     }
 
-    @Autowired
-    public void setAdoptionService(AdoptionService adoptionService){
-        this.adoptionService = adoptionService;
-    }
 
     @Test
     public void addNewAdoption_NullVerificationThrowsException(){
@@ -62,7 +61,8 @@ public class AdoptionServiceTest {
         Adoption adoptionToUpdate = TestFactory.getAdoptionInstance();
         adoptionToUpdate.setId(15);
 
-        assertFalse(adoptionService.updateAdoption(adoptionToUpdate));
+        var updateAdoptionResult = adoptionService.updateAdoption(adoptionToUpdate);        
+        assertFalse(updateAdoptionResult);
     }
 
     @Test
