@@ -16,26 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AdoptionResponse {
-    
-//    private String adopterName;
-//    private String adopterPhoneNumber;
-//    private String petBreed;
-//    private String petType;
-//    private String petName;
-//    private LocalDate adoptionDate;
-//
-//    public static AdoptionResponse fromAdoption(Adoption adoption){
-//
-//        return AdoptionResponse.builder()
-//                .adopterName(adoption.getAdopter().getAdopterName())
-//                .adopterPhoneNumber(adoption.getAdopter().getPhoneNumber())
-//                .petBreed(adoption.getPet().getPetBreed().toString())
-//                .petType(adoption.getPet().getPetType().toString())
-//                .petName(adoption.getPet().getPetName())
-//                .adoptionDate(adoption.getAdoptionDate())
-//                .build();
-//    }
-
 
     private Adopter adopter;
     private Pet pet;

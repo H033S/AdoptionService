@@ -25,6 +25,20 @@ public class AdopterTest {
 
         assertFalse(adopter.isModelValid());
         assertEquals(1, adopter.getModelViolations().size());
+
+        adopter.getModelViolations().forEach(System.out::println);
+    }
+
+    @Test
+    public void createAdopter_ValidationReturnTrue_WithCorrectPhoneNumber2(){
+
+
+        Adopter adopter = new Adopter(
+                1,
+                "Antonio Nazco",
+                "+111 (202) 555-0125");
+
+        assertTrue(adopter.isModelValid());
     }
 
     @Test 

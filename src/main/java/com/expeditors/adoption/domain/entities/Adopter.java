@@ -1,7 +1,7 @@
 package com.expeditors.adoption.domain.entities;
 
 import com.expeditors.adoption.domain.Entity;
-import com.expeditors.adoption.domain.annottations.PhoneNumberPattern;
+import com.expeditors.adoption.domain.annottations.PhoneNumber;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -13,7 +13,7 @@ public class Adopter extends Entity {
     @Size(max = 200, message = "{validation.adopter.name.size.too_long}")
     private String adopterName;
 
-    @PhoneNumberPattern
+    @PhoneNumber(message = "{validation.adopter.phone-number.incorrect}")
     private String phoneNumber;
 
     public Adopter(

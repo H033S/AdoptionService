@@ -29,12 +29,11 @@ public class AdoptionController {
 
     @GetMapping("/all")
     public List<AdoptionResponse> getAdoptions(){
-        var adoptionList =  adoptionService.findAllAdoptions()
+
+        return adoptionService.findAllAdoptions()
                 .stream()
                 .map(AdoptionResponse::fromAdoption)
                 .toList();
-
-        return adoptionList;
     }
 
     @GetMapping("/all/{adoptionDate}")
@@ -42,12 +41,7 @@ public class AdoptionController {
             @PathVariable("adoptionDate")LocalDate adoptionDate){
 
         return adoptionService.getAdopterBy(
-                new Predicate<Adoption>() {
-                    @Override
-                    public boolean test(Adoption adoption) {
-                        return adoption.getAdoptionDate().equals(adoption.getAdoptionDate());
-                    }
-                });
+                adoption -> adoption.getAdoptionDate().equals(adoptionDate));
     }
 
     @GetMapping("/{id}")
