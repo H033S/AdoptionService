@@ -1,162 +1,197 @@
 package com.expeditors.adoption.service;
 
+import com.expeditors.adoption.dao.CrudDAO;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
 import com.expeditors.adoption.factory.TestFactory;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
+import static org.hamcrest.Matchers.containsInRelativeOrder;
 
-
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
+@AutoConfigureMockMvc
 public class AdoptionServiceTest {
 
+    @MockBean
+    CrudDAO<Adoption> adoptionRepo;
+
     @Autowired
-    protected AdoptionService adoptionService;
-
-    protected Adoption adoptionToAdd;
-
-    @BeforeEach
-    void setUp() {
-        adoptionToAdd = TestFactory.getAdoptionInstance();
-        adoptionService.clearAdoptions();
-    }
-
+    AdoptionService adoptionService;
 
     @Test
-    public void addNewAdoption_NullVerificationThrowsException(){
-        assertThrows(NullPointerException.class,
+    public void addNewAdoption_RunSuccessfully_WithNotNullValue(){
+        var mockAdoption = TestFactory.getAdoptionInstance();
+
+        doReturn(mockAdoption)
+                .when(adoptionRepo).insert(mockAdoption);
+
+        var adoption = adoptionService.addNewAdoption(mockAdoption);
+
+        assertFalse(Objects.isNull(adoption));
+        assertSame(mockAdoption, adoption);
+    }
+
+    @Test
+    public void addNewAdoption_ThrowsIllegalArgumentException_WhenAdoptionPassedIsNull(){
+
+        assertThrows(IllegalArgumentException.class,
                 () -> adoptionService.addNewAdoption(null));
     }
 
     @Test
-    public void addNewAdoption_SuccessfullyAddedObject(){
-        var adoptionReceived  = adoptionService.addNewAdoption(adoptionToAdd);
-        assertEquals(adoptionToAdd, adoptionReceived);
+    public void updateAdoption_ReturnTrue_WhenIdIsFoundInRepo(){
+        var mockAdoption = TestFactory.getAdoptionInstance();
+
+        doReturn(true)
+                .when(adoptionRepo).update(mockAdoption);
+
+        assertTrue(adoptionService.updateAdoption(mockAdoption));
     }
 
     @Test
-    public void updateAdoption_ReturnsTrueAfterUpdate()
-    {
-        adoptionService.addNewAdoption(adoptionToAdd);
-        Adoption adoptionToUpdate = TestFactory.getAdoptionInstance();
+    public void updateAdoption_ReturnFalse_WhenIdIsNotFoundInRepo(){
+        var mockAdoption = TestFactory.getAdoptionInstance();
 
-        var adopter = new Adopter(2, "Hello World", "561-767-5936");
-        adoptionToUpdate.setAdopter(adopter);
+        doReturn(false)
+                .when(adoptionRepo).update(mockAdoption);
 
-        assertTrue(adoptionService.updateAdoption(adoptionToUpdate));
+        assertFalse(adoptionService.updateAdoption(mockAdoption));
     }
 
     @Test
-    public void updateAdoption_ReturnsFalseBecauseInvalidId()
-    {
-        adoptionService.addNewAdoption(adoptionToAdd);
-        Adoption adoptionToUpdate = TestFactory.getAdoptionInstance();
-        adoptionToUpdate.setId(15);
-
-        var updateAdoptionResult = adoptionService.updateAdoption(adoptionToUpdate);        
-        assertFalse(updateAdoptionResult);
-    }
-
-    @Test
-    void updateAdoption_ThrowsExceptionWithNullValuesPassedThroughParameter() {
-
-        assertThrows(NullPointerException.class,
+    public void updateAdoption_ThrowsIllegalArgumentException_WhenAdoptionPassedIsNull(){
+        assertThrows(IllegalArgumentException.class,
                 () -> adoptionService.updateAdoption(null));
     }
 
-
     @Test
-    public void deleteAdoption_ReturnFalseIfIncorrectIdWasPassed(){
-        assertFalse(adoptionService.deleteAdoption(-1));
-    }
+    public void deleteAdoption_ReturnsTrue_WhenIdIsFound(){
+        doReturn(true)
+                .when(adoptionRepo).delete(1);
 
-    @Test
-    public void deleteAdoption_ReturnTrueIfCorrectKeyIsPassed(){
-
-        var idSetup  =
-                adoptionService
-                        .addNewAdoption(adoptionToAdd)
-                        .getId();
-
-        var sizeBeforeDeletion =
-                adoptionService.findAllAdoptions().size();
-        assertTrue(adoptionService.deleteAdoption(idSetup));
-
-        var sizeAfterDeletion =
-                adoptionService.findAllAdoptions().size();
-
-        assertEquals(sizeBeforeDeletion, sizeAfterDeletion + 1);
-    }
-
-
-    @Test
-    public void findAdoptionById_ReturnsObjectWithCorrectId(){
-
-        var idSetup = adoptionService
-                            .addNewAdoption(adoptionToAdd)
-                            .getId();
-
-        assertNotNull(adoptionService.findAdoptionById(idSetup));
+        assertTrue(adoptionService.deleteAdoption(1));
     }
 
     @Test
-    public void findAdoptionById_ReturnsNullWithIncorrectId(){
-        var idThatWillNeverBeCreated = -1;
-        assertNull(adoptionService.findAdoptionById(
-                idThatWillNeverBeCreated));
+    public void deleteAdoption_ReturnsFalse_WhenIdIsNotFound(){
+        doReturn(false)
+                .when(adoptionRepo).delete(1);
+
+        assertFalse(adoptionService.deleteAdoption(1));
     }
 
     @Test
-    public void getAdopterByName_ReturnCorrectResult() {
-        adoptionService.addNewAdoption(adoptionToAdd);
-        var allAdoptionsDoneByAntonio = adoptionService.getAdopterBy(
-                adopter -> adopter.getAdopterName().equalsIgnoreCase("Antonio Nazco"));
+    public void findAdoptionsById_ReturnAdoption_WhenIdIsFound(){
+        var mockAdoption = TestFactory.getAdoptionInstance();
 
-        assertThat(
-                allAdoptionsDoneByAntonio,
-                Matchers.containsInAnyOrder(adoptionToAdd),
-                Matchers.iterableWithSize(1));
+        doReturn(mockAdoption)
+                .when(adoptionRepo).findById(1);
+
+        var objectFound = adoptionService.findAdoptionById(1);
+
+        assertSame(mockAdoption, objectFound);
     }
 
-    private void assertThat(List<Adopter> allAdoptionsDoneByAntonio,
-                            Matcher<Iterable<? extends Adoption>> iterableMatcher,
-                            Matcher<Iterable<Object>> hasSize) {
-        iterableMatcher.matches(allAdoptionsDoneByAntonio);
-        hasSize.matches(allAdoptionsDoneByAntonio);
+    @Test
+    public void findAdoptionsById_ReturnNull_WhenIdIsNotFound(){
+        doReturn(null)
+                .when(adoptionRepo).findById(1);
+
+        var objectFound = adoptionService.findAdoptionById(1);
+
+        assertNull(objectFound);
+    }
+
+    @Test
+    public void findAllAdoptions_RunSuccessful(){
+        var mockAdoptionList = List.of(
+                TestFactory.getAdoptionInstance(),
+                TestFactory.getAdoptionInstance(),
+                TestFactory.getAdoptionInstance(),
+                TestFactory.getAdoptionInstance(),
+                TestFactory.getAdoptionInstance()
+        );
+
+        doReturn(mockAdoptionList)
+                .when(adoptionRepo).findAll();
+
+        var adoptionListReturned = adoptionService.findAllAdoptions();
+
+        assertEquals(mockAdoptionList.size(), adoptionListReturned.size());
+        assertSame(mockAdoptionList, adoptionListReturned);
+    }
+
+    @Test
+    public void getAdoptersSortedByDateOfAdoption_RunSuccessful(){
+
+        var adopter1 = new Adopter(1,  "Antonio Nazco", "123-456-789");
+        var adopter2 = new Adopter(1,  "Nathaly Nazco", "123-456-789");
+
+        var ad1 = new Adoption(
+                1,
+                adopter1,
+                TestFactory.getPetInstance(),
+                LocalDate.now().minusDays(2));
+
+        var ad2 = new Adoption(
+                2,
+                adopter2,
+                TestFactory.getPetInstance(),
+                LocalDate.now().minusDays(3));
+
+
+        doReturn(List.of(ad2,ad1))
+                .when(adoptionRepo).findAll();
+
+        var result = adoptionService
+                .getAdoptersSortedByDateOfAdoption();
+
+        assertEquals(2, result.size());
+        assertThat(result, containsInRelativeOrder(adopter2, adopter1));
     }
 
 
     @Test
-    public void getAdoptersByName_ReturnsAllElementThatContainsName(){
+    public void getAdoptersSortedByName_RunSuccessful(){
 
-        adoptionService.addNewAdoption(TestFactory.getAdoptionInstance());
-        adoptionService.addNewAdoption(TestFactory.getAdoptionInstance());
-        adoptionService.addNewAdoption(TestFactory.getAdoptionInstance());
+        var adopter1 = new Adopter(1,  "Antonio Nazco", "123-456-789");
+        var adopter2 = new Adopter(1,  "Nathaly Nazco", "123-456-789");
 
-        var adopter = TestFactory.getAdopterInstance();
-        var adopterName = adopter.getAdopterName();
+        var ad1 = new Adoption(
+                1,
+                adopter1,
+                TestFactory.getPetInstance(),
+                LocalDate.now().minusDays(2));
 
-        var adopterList = adoptionService.getAdoptersByName(adopterName);
-        assertEquals(3, adopterList.size());
+        var ad2 = new Adoption(
+                2,
+                adopter2,
+                TestFactory.getPetInstance(),
+                LocalDate.now().minusDays(3));
+
+
+        doReturn(List.of(ad2,ad1))
+                .when(adoptionRepo).findAll();
+
+        var result = adoptionService
+                .getAdoptersByName("Antonio Nazco");
+
+        assertEquals(1, result.size());
+        assertThat(result, contains( adopter1));
     }
-
-    @Test
-    public void getAdoptersByName_ReturnsEmptyWhereNameIsNotFound(){
-
-        adoptionService.addNewAdoption(TestFactory.getAdoptionInstance());
-        adoptionService.addNewAdoption(TestFactory.getAdoptionInstance());
-        adoptionService.addNewAdoption(TestFactory.getAdoptionInstance());
-
-        var adopterList = adoptionService.getAdoptersByName("SQL");
-        assertEquals(0, adopterList.size());
-    }
-
 }

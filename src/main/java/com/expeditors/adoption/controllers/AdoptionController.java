@@ -1,16 +1,19 @@
 package com.expeditors.adoption.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.Objects;
+import java.util.function.Predicate;
 
+import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
+import org.springframework.cglib.core.Local;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import com.expeditors.adoption.dto.AdoptionRequest;
 import com.expeditors.adoption.dto.AdoptionResponse;
-import com.expeditors.adoption.service.AdoptionService;
+import com.expeditors.adoption.service.AdoptionServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -18,19 +21,52 @@ import jakarta.validation.Valid;
 @RequestMapping("/adoption")
 public class AdoptionController {
     
-    AdoptionService adoptionService;
+    AdoptionServiceImpl adoptionService;
 
-    public AdoptionController(AdoptionService adoptionService) {
+    public AdoptionController(AdoptionServiceImpl adoptionService) {
         this.adoptionService = adoptionService;
     }
 
-    @GetMapping
-    public List<Adoption> getAdoption(){
-        return adoptionService.findAllAdoptions();
+    @GetMapping("/all")
+    public List<AdoptionResponse> getAdoptions(){
+        var adoptionList =  adoptionService.findAllAdoptions()
+                .stream()
+                .map(AdoptionResponse::fromAdoption)
+                .toList();
+
+        return adoptionList;
+    }
+
+    @GetMapping("/all/{adoptionDate}")
+    public List<Adopter> getAdoptersByAdoptionDate(
+            @PathVariable("adoptionDate")LocalDate adoptionDate){
+
+        return adoptionService.getAdopterBy(
+                new Predicate<Adoption>() {
+                    @Override
+                    public boolean test(Adoption adoption) {
+                        return adoption.getAdoptionDate().equals(adoption.getAdoptionDate());
+                    }
+                });
+    }
+
+    @GetMapping("/{id}")
+    public AdoptionResponse getAdoption(
+            @PathVariable("id") int adoptionId){
+
+        var adoption = adoptionService.findAdoptionById(adoptionId);
+
+        if(Objects.isNull(adoption)) {
+            throw new IllegalArgumentException(
+                    "Cannot return an adoption for Id = " + adoptionId
+            );
+
+        }
+        return AdoptionResponse.fromAdoption(adoption);
     }
 
     @PostMapping
-    public AdoptionResponse getAdoption(
+    public AdoptionResponse addAdoption(
         @Valid @RequestBody AdoptionRequest adoptionRequest){
 
             var adoption = adoptionService.addNewAdoption(
@@ -39,5 +75,23 @@ public class AdoptionController {
 
             return AdoptionResponse
             .fromAdoption(adoption);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAdoption(
+            @PathVariable("id") int adoptionId){
+
+        var adoption = adoptionService.findAdoptionById(adoptionId);
+
+        if(Objects.isNull(adoption)){
+            return ResponseEntity.notFound().build();
+        }
+
+        if(adoptionService.deleteAdoption(adoptionId)){
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.internalServerError().build();
     }
 }

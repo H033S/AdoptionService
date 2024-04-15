@@ -3,12 +3,12 @@ package com.expeditors.adoption.domain.entities;
 import com.expeditors.adoption.domain.Entity;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+
 import java.time.LocalDate;
 
-@Data
-@Builder
+@Setter
+@Getter
 public class Adoption extends Entity{
 
     @NotNull(message = "{validation.adoption.adopter.null}")
@@ -23,7 +23,7 @@ public class Adoption extends Entity{
 
     public Adoption(
         int id,
-        Adopter Adopter,
+        Adopter adopter,
         Pet pet,
         LocalDate adoptionDate) {
         
@@ -33,21 +33,11 @@ public class Adoption extends Entity{
         this.adoptionDate = adoptionDate;
     }
 
-    
-
-    public Adoption(
-        Adopter adopter,
-        Pet pet,
-        LocalDate adoptionDate) {
-
-            this(0, adopter, pet, adoptionDate);
-    }
-
-    
     @Override
     public String toString() {
         return getAdopter().getAdopterName() + 
-        "adopted a" + getPet().getPetType() + 
-        "called" + getPet().getPetName() + getAdoptionDate();
+        " adopted a " + getPet().getPetType() +
+        " called " + getPet().getPetName() + getAdoptionDate();
     }
+
 }

@@ -27,17 +27,15 @@ public class AdoptionRequest {
     @NotNull
     private Pet pet;
 
-    @NonNull
+    @NotNull
     @Future
     private LocalDate adoptionDate;
 
 
     public Adoption toAdoption(){
-        return Adoption
-        .builder()
-        .adopter(adopter)
-        .pet(pet)
-        .adoptionDate(adoptionDate)
-        .build();
+        return new Adoption(
+                0, adopter, pet,adoptionDate);
     }
 }
+
+

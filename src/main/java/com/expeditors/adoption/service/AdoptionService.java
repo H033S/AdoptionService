@@ -1,70 +1,28 @@
-
 package com.expeditors.adoption.service;
 
-import com.expeditors.adoption.dao.CrudDAO;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
-@Service
-public class AdoptionService {
+public interface AdoptionService {
+    Adoption addNewAdoption(Adoption adoption);
 
-    private final CrudDAO<Adoption> adoptionDAO;
+    boolean updateAdoption(Adoption adoption);
 
-    @Autowired
-    public AdoptionService(CrudDAO<Adoption> adoptionDAO) {
-        this.adoptionDAO = adoptionDAO;
-    }
+    boolean deleteAdoption(int id);
 
-    public Adoption addNewAdoption(Adoption adoption) {
-        Objects.requireNonNull(adoption);
+    Adoption findAdoptionById(int id);
 
-        return adoptionDAO.insert(adoption);
-    }
-    public boolean updateAdoption(Adoption adoption) {
-        return adoptionDAO.update(adoption);
-    }
-    public boolean deleteAdoption(int id) {
-        return adoptionDAO.delete(id);
-    }
+    List<Adoption> findAllAdoptions();
 
-    public Adoption findAdoptionById(int id) {
-        return adoptionDAO.findById(id);
-    }
+    List<Adopter> getAdoptersSortedBy(Comparator<Adoption> comparator);
 
-    public List<Adoption> findAllAdoptions() {
-        return adoptionDAO.findAll();
-    }
-    public List<Adopter> getAdoptersSortedBy(Comparator<Adoption> comparator) {
-        return adoptionDAO.findAll().stream()
-                .sorted(comparator)
-                .map(Adoption::getAdopter)
-                .toList();
-    }
-    public List<Adopter> getAdoptersSortedByDateOfAdoption() {
-        return getAdoptersSortedBy(Comparator.comparing(Adoption::getAdoptionDate));
-    }
+    List<Adopter> getAdoptersSortedByDateOfAdoption();
 
-    public List<Adopter> getAdopterBy(Predicate<Adopter> adopterPredicate) {
-        return adoptionDAO.findAll().stream()
-                .map(Adoption::getAdopter)
-                .filter(adopterPredicate)
-                .toList();
-    }
+    List<Adopter> getAdopterBy(Predicate<Adoption> adopterPredicate);
 
-    public List<Adopter> getAdoptersByName(String name) {
-        return getAdopterBy(
-                adopter -> adopter.getAdopterName()
-                                                   .equalsIgnoreCase(name));
-    }
-
-    public void clearAdoptions(){
-        adoptionDAO.clear();
-    }
+    List<Adopter> getAdoptersByName(String name);
 }
