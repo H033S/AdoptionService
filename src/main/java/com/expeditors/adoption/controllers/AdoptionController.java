@@ -1,19 +1,18 @@
 package com.expeditors.adoption.controllers;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 
-import com.expeditors.adoption.domain.entities.Adopter;
-import com.expeditors.adoption.domain.entities.Adoption;
-import org.springframework.cglib.core.Local;
+import com.expeditors.adoption.dto.adoption.AddRequestDTO;
+import com.expeditors.adoption.dto.adoption.AdoptionResponseDTO;
+import com.expeditors.adoption.service.AdopterService;
+import com.expeditors.adoption.service.AdoptionService;
+import com.expeditors.adoption.service.PetService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.expeditors.adoption.dto.AdoptionRequest;
-import com.expeditors.adoption.dto.AdoptionResponse;
-import com.expeditors.adoption.service.AdoptionServiceImpl;
+import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -21,56 +20,91 @@ import jakarta.validation.Valid;
 @RequestMapping("/adoption")
 public class AdoptionController {
     
-    AdoptionServiceImpl adoptionService;
+    private final AdoptionService adoptionService;
+    private final PetService petService;
+    private final AdopterService adopterService;
 
-    public AdoptionController(AdoptionServiceImpl adoptionService) {
+    public AdoptionController(
+            AdoptionServiceImpl adoptionService,
+            PetService petService,
+            AdopterService adopterService) {
+
         this.adoptionService = adoptionService;
+        this.petService = petService;
+        this.adopterService = adopterService;
     }
 
     @GetMapping("/all")
-    public List<AdoptionResponse> getAdoptions(){
+    public ResponseEntity<?> listAdoptions(){
 
-        return adoptionService.findAllAdoptions()
-                .stream()
-                .map(AdoptionResponse::fromAdoption)
-                .toList();
+        return ResponseEntity.ok(
+                adoptionService.findAllAdoptions()
+                        .stream()
+                        .map(AdoptionResponseDTO::createFromAdoption)
+                        .toList());
     }
 
     @GetMapping("/all/{adoptionDate}")
-    public List<Adopter> getAdoptersByAdoptionDate(
-            @PathVariable("adoptionDate")LocalDate adoptionDate){
+    public ResponseEntity<?> listAdoptionsByDate(
+            @PathVariable("adoptionDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate adoptionDate){
 
-        return adoptionService.getAdopterBy(
-                adoption -> adoption.getAdoptionDate().equals(adoptionDate));
+        return ResponseEntity.ok(
+                adoptionService
+                        .findAllAdoptions()
+                        .stream()
+                        .filter(adoption -> adoption.getAdoptionDate().equals(adoptionDate))
+                        .map(AdoptionResponseDTO::createFromAdoption)
+                        .toList());
     }
 
     @GetMapping("/{id}")
-    public AdoptionResponse getAdoption(
+    public ResponseEntity<?> getAdoption(
             @PathVariable("id") int adoptionId){
 
         var adoption = adoptionService.findAdoptionById(adoptionId);
 
         if(Objects.isNull(adoption)) {
-            throw new IllegalArgumentException(
-                    "Cannot return an adoption for Id = " + adoptionId
-            );
-
+            return ResponseEntity.notFound().build();
         }
-        return AdoptionResponse.fromAdoption(adoption);
+
+        return ResponseEntity.ok(
+                AdoptionResponseDTO.createFromAdoption(adoption)
+        );
     }
 
     @PostMapping
-    public AdoptionResponse addAdoption(
-        @Valid @RequestBody AdoptionRequest adoptionRequest){
+    public ResponseEntity<?> addAdoption(
+         @Valid @RequestBody AddRequestDTO.AddAdoptionRequest adoptionRequest){
 
-            var adoption = adoptionService.addNewAdoption(
-                adoptionRequest.toAdoption()
-            );
+            var associatedPet = petService.getPetById(adoptionRequest.getPetId());
+            var associatedAdopter = adopterService.getAdopterById(adoptionRequest.getAdopterId());
 
-            return AdoptionResponse
-            .fromAdoption(adoption);
+            if(Objects.isNull(associatedPet) ||
+                    Objects.isNull(associatedAdopter)){
+                return ResponseEntity.notFound().build();
+            }
+
+            var adoption = AddRequestDTO.createAdoption(
+                    adoptionRequest.getAdoptionDate(),
+                    associatedAdopter,
+                    associatedPet);
+
+            var adoptionCreatedResult = adoptionService.addNewAdoption(adoption);
+            return ResponseEntity.ok(
+                    AdoptionResponseDTO.createFromAdoption(adoptionCreatedResult));
     }
 
+
+
+// TODO: Add Put For Adoption
+//    @PutMapping("/{adoptionId}")
+//    public ResponseEntity<?> updateAdoption(
+//            @PathVariable("adoptionId") int adoptionId,
+//            @RequestBody LocalDate adoptionDate){
+//
+////        return ResponseEntity.internalServerError().build();
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAdoption(

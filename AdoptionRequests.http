@@ -1,5 +1,32 @@
-GET localhost:7000/adoption/all
+@host = http://localhost:7000/adoption
 
-##############################
+############################################################
+GET {{host}}/all
 
-GET localhost:7000/adoption/1
+############################################################
+@adoptionDate = 2024-04-14
+GET {{host}}/all/{{adoptionDate}}
+
+############################################################
+@getId=0
+GET {{host}}/{{getId}}
+
+############################################################
+POST {{host}}
+Content-Type: application/json
+
+{
+  "adoptionDate": "2024-04-18",
+  "adopterId": "1",
+  "petId": "1"
+}
+
+############################################################
+@updateId =1
+PUT http://localhost:7000/adoption/{{updateId}}
+
+
+############################################################
+@deleteId=1
+DELETE {{host}}/{{deleteId}}
+

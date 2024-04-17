@@ -1,16 +1,13 @@
 package com.expeditors.adoption.exceptions;
 
-import java.util.List;
-import java.util.Objects;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import jakarta.validation.ValidationException;
+import java.util.List;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -42,4 +39,21 @@ public class GlobalExceptionHandler {
             validationProblemDetail.setProperty("errors", errors);
             return validationProblemDetail;
         }
+
+
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleGlobalExceptions(
+            Exception exception){
+
+        ProblemDetail validationProblemDetail =
+                ProblemDetail.forStatusAndDetail(
+                        HttpStatus.BAD_REQUEST,
+                        "Validation Error");
+
+        validationProblemDetail.setProperty(
+                "ExceptionError",
+                exception.getMessage());
+
+        return validationProblemDetail;
+    }
 }

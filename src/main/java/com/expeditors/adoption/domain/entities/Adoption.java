@@ -1,6 +1,7 @@
 package com.expeditors.adoption.domain.entities;
 
 import com.expeditors.adoption.domain.Entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -18,6 +19,7 @@ public class Adoption extends Entity{
     private Pet pet;
 
     @Future(message = "{validation.adoption.adoptionDate.past}")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate adoptionDate;
 
 

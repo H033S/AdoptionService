@@ -1,5 +1,6 @@
-package com.expeditors.adoption.dao.inmemory;
+package com.expeditors.adoption.dao.inmemory.implementation;
 
+import com.expeditors.adoption.dao.inmemory.InMemoryAbstractCrudDAO;
 import com.expeditors.adoption.domain.entities.Adoption;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;

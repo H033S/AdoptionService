@@ -1,9 +1,10 @@
 
-package com.expeditors.adoption.service;
+package com.expeditors.adoption.service.implementation;
 
 import com.expeditors.adoption.dao.CrudDAO;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
+import com.expeditors.adoption.service.AdoptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,7 +86,4 @@ public class AdoptionServiceImpl implements AdoptionService {
                 .equalsIgnoreCase(name));
     }
 
-    public void clearAdoptions(){
-        adoptionDAO.clear();
-    }
 }

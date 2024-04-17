@@ -1,30 +1,30 @@
 package com.expeditors.adoption.controllers;
 
 import com.expeditors.adoption.domain.entities.Adoption;
+import com.expeditors.adoption.dto.adoption.AddRequestDTO;
+import com.expeditors.adoption.factory.JsonConverter;
 import com.expeditors.adoption.factory.TestFactory;
-import com.expeditors.adoption.service.AdoptionServiceImpl;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.expeditors.adoption.service.implementation.AdopterServiceImpl;
+import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
+import com.expeditors.adoption.service.implementation.PetServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.util.List;
+
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AdoptionControllerTest {
@@ -32,33 +32,38 @@ public class AdoptionControllerTest {
     @MockBean
     private AdoptionServiceImpl adoptionService;
 
+    @MockBean
+    private PetServiceImpl petService;
+
+    @MockBean
+    private AdopterServiceImpl adopterService;
+
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("GET /adoption/all - Found")
-    //TODO: Pending Verification of the Response Json
+    @DisplayName("GET /adoption/all - Success")
     public void getAllAdoption_RunSuccessfully() throws Exception{
         
         var mockAdoption1 = TestFactory.getAdoptionInstance();
         var mockAdoption2 = TestFactory.getAdoptionInstance();
-
-        Mockito.doReturn(List.of(
+        var mockListOfAdoption = List.of(
                 mockAdoption1,
-                mockAdoption2))
-                .when(adoptionService).findAllAdoptions();
+                mockAdoption2);
 
+        Mockito.doReturn(mockListOfAdoption)
+                .when(adoptionService).findAllAdoptions();
 
         mockMvc.perform(get("/adoption/all"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(
-                MediaType.APPLICATION_JSON));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[0].id", is(1)))
+                .andExpect(jsonPath("$.[0].adopterResponse.id", is(1)))
+                .andExpect(jsonPath("$.[0].petResponse.id", is(1)));
     }
-
 
     @Test
     @DisplayName("GET /adoption/{id} - Found")
-    //TODO: Pending Verification of the Response Json
     public void getAdoptionById_ReturnObject_WithCorrectId() throws Exception {
         var mockAdoption1 = TestFactory.getAdoptionInstance();
 
@@ -67,40 +72,44 @@ public class AdoptionControllerTest {
 
         mockMvc.perform(get("/adoption/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(
-                        MediaType.APPLICATION_JSON))
-                //Response
-                .andExpect(jsonPath("$.adopter.id",is(mockAdoption1.getAdopter().getId())))
-                .andExpect(jsonPath("$.adopter.adopterName", is(mockAdoption1.getAdopter().getAdopterName())))
-                .andExpect(jsonPath("$.adopter.phoneNumber", is(mockAdoption1.getAdopter().getPhoneNumber())))
-                .andExpect(jsonPath("$.pet.id", is(mockAdoption1.getPet().getId())))
-                .andExpect(jsonPath("$.pet.petBreed", is(mockAdoption1.getPet().getPetBreed().toString())))
-                .andExpect(jsonPath("$.pet.petType", is(mockAdoption1.getPet().getPetType().toString())))
-                .andExpect(jsonPath("$.pet.petName", is(mockAdoption1.getPet().getPetName())))
-                .andExpect(jsonPath("$.adoptionDate", is(mockAdoption1.getAdoptionDate().toString())));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.adopterResponse.id", is(1)))
+                .andExpect(jsonPath("$.petResponse.id", is(1)));
     }
+
+    //TODO: Create Test For GET /adoption/{id} - ID Not Found
 
     @Test
-    @DisplayName("POST /adoption")
+    @DisplayName("POST /adoption - Success")
     public void addAdoption_ReturnsOk_WithValidObject() throws Exception {
-        var mockAdoption = TestFactory.getAdoptionInstance();
 
+        var mockDate = LocalDate.now().plusDays(1);
+        var mockAdoptionRequest = AddRequestDTO.AddAdoptionRequest
+                .builder()
+                .adoptionDate(mockDate)
+                .petId(1)
+                .adopterId(1)
+                .build();
+
+        var mockAdopter = TestFactory.getAdopterInstance();
+        var mockPet = TestFactory.getPetInstance();
+        var mockAdoption = new Adoption(1, mockAdopter, mockPet, mockDate);
+
+        Mockito.doReturn(mockAdopter)
+                .when(adopterService).getAdopterById(1);
+        Mockito.doReturn(mockPet)
+                        .when(petService).getPetById(1);
         Mockito.doReturn(mockAdoption)
-                .when(adoptionService).addNewAdoption(mockAdoption);
+                .when(adoptionService).addNewAdoption(any());
 
-        mockMvc.perform(
+        var request = mockMvc.perform(
                 post("/adoption")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(mockAdoption)));
-    }
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonConverter.fromObject(mockAdoptionRequest)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-    private String asJsonString(Adoption adoption) {
-
-        try{
-            return new ObjectMapper().writeValueAsString(adoption);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Test
@@ -141,4 +150,5 @@ public class AdoptionControllerTest {
         mockMvc.perform(delete("/adoption/{id}", 1))
                 .andExpect(status().isInternalServerError());
     }
+
 }

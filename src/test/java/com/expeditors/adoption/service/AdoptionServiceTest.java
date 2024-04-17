@@ -4,13 +4,12 @@ import com.expeditors.adoption.dao.CrudDAO;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
 import com.expeditors.adoption.factory.TestFactory;
+import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,23 +21,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 public class AdoptionServiceTest {
 
-    @MockBean
-    CrudDAO<Adoption> adoptionRepo;
-
-    @Autowired
-    AdoptionService adoptionService;
+    @Mock
+    CrudDAO<Adoption> adoptionDAO;
+    @InjectMocks
+    AdoptionServiceImpl adoptionService;
 
     @Test
     public void addNewAdoption_RunSuccessfully_WithNotNullValue(){
         var mockAdoption = TestFactory.getAdoptionInstance();
 
         doReturn(mockAdoption)
-                .when(adoptionRepo).insert(mockAdoption);
+                .when(adoptionDAO).insert(mockAdoption);
 
         var adoption = adoptionService.addNewAdoption(mockAdoption);
 
@@ -58,7 +54,7 @@ public class AdoptionServiceTest {
         var mockAdoption = TestFactory.getAdoptionInstance();
 
         doReturn(true)
-                .when(adoptionRepo).update(mockAdoption);
+                .when(adoptionDAO).update(mockAdoption);
 
         assertTrue(adoptionService.updateAdoption(mockAdoption));
     }
@@ -68,7 +64,7 @@ public class AdoptionServiceTest {
         var mockAdoption = TestFactory.getAdoptionInstance();
 
         doReturn(false)
-                .when(adoptionRepo).update(mockAdoption);
+                .when(adoptionDAO).update(mockAdoption);
 
         assertFalse(adoptionService.updateAdoption(mockAdoption));
     }
@@ -82,7 +78,7 @@ public class AdoptionServiceTest {
     @Test
     public void deleteAdoption_ReturnsTrue_WhenIdIsFound(){
         doReturn(true)
-                .when(adoptionRepo).delete(1);
+                .when(adoptionDAO).delete(1);
 
         assertTrue(adoptionService.deleteAdoption(1));
     }
@@ -90,7 +86,7 @@ public class AdoptionServiceTest {
     @Test
     public void deleteAdoption_ReturnsFalse_WhenIdIsNotFound(){
         doReturn(false)
-                .when(adoptionRepo).delete(1);
+                .when(adoptionDAO).delete(1);
 
         assertFalse(adoptionService.deleteAdoption(1));
     }
@@ -100,7 +96,7 @@ public class AdoptionServiceTest {
         var mockAdoption = TestFactory.getAdoptionInstance();
 
         doReturn(mockAdoption)
-                .when(adoptionRepo).findById(1);
+                .when(adoptionDAO).findById(1);
 
         var objectFound = adoptionService.findAdoptionById(1);
 
@@ -110,7 +106,7 @@ public class AdoptionServiceTest {
     @Test
     public void findAdoptionsById_ReturnNull_WhenIdIsNotFound(){
         doReturn(null)
-                .when(adoptionRepo).findById(1);
+                .when(adoptionDAO).findById(1);
 
         var objectFound = adoptionService.findAdoptionById(1);
 
@@ -128,7 +124,7 @@ public class AdoptionServiceTest {
         );
 
         doReturn(mockAdoptionList)
-                .when(adoptionRepo).findAll();
+                .when(adoptionDAO).findAll();
 
         var adoptionListReturned = adoptionService.findAllAdoptions();
 
@@ -156,7 +152,7 @@ public class AdoptionServiceTest {
 
 
         doReturn(List.of(ad2,ad1))
-                .when(adoptionRepo).findAll();
+                .when(adoptionDAO).findAll();
 
         var result = adoptionService
                 .getAdoptersSortedByDateOfAdoption();
@@ -186,7 +182,7 @@ public class AdoptionServiceTest {
 
 
         doReturn(List.of(ad2,ad1))
-                .when(adoptionRepo).findAll();
+                .when(adoptionDAO).findAll();
 
         var result = adoptionService
                 .getAdoptersByName("Antonio Nazco");

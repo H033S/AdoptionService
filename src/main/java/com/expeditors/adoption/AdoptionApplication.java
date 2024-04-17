@@ -1,12 +1,10 @@
 package com.expeditors.adoption;
 
-import com.expeditors.adoption.dao.CrudDAO;
 import com.expeditors.adoption.domain.entities.*;
-import com.expeditors.adoption.service.AdoptionServiceImpl;
+import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -29,7 +27,7 @@ class  RunApp implements CommandLineRunner{
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args)   {
 		 var adopter1 = new Adopter(0, "Antonio Nazco", "123-123-4567");
 		 var adopter2 = new Adopter(0, "Nathaly Nazco", "123-123-4567");
 
