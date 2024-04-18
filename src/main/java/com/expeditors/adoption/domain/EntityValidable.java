@@ -2,10 +2,10 @@ package com.expeditors.adoption.domain;
 
 import java.util.Set;
 
-import jakarta.validation.ConstraintViolation;
+import com.expeditors.adoption.domain.violations.ConstraintError;
 
 public interface EntityValidable <T extends Entity> {
-    
-    Set<ConstraintViolation<T>> getModelViolations();
+
+    Set<ConstraintError> getModelViolations();
     boolean isModelValid();
 }

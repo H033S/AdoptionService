@@ -1,12 +1,13 @@
 package com.expeditors.adoption.domain;
 
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.expeditors.adoption.domain.violations.ConstraintError;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,8 +31,16 @@ public abstract class Entity implements EntityValidable<Entity> {
     }
 
     @JsonIgnore
-    public Set<ConstraintViolation<Entity>> getModelViolations(){
-        return validator.validate(this);
+    public Set<ConstraintError> getModelViolations(){
+
+        return validator.validate(this)
+                .stream()
+                .map(violation -> ConstraintError.builder()
+                        .message(violation.getMessage())
+                        .fieldName(violation.getPropertyPath().toString())
+                        .rejectedValue(Objects.isNull(violation.getInvalidValue())?"null":violation.getInvalidValue().toString())
+                        .build())
+                .collect(Collectors.toSet());
     }
 
     @JsonIgnore

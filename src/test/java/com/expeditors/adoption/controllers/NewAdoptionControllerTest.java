@@ -42,11 +42,10 @@ public class NewAdoptionControllerTest {
 
         var adoptionRequest = AddRequestDTO.AddAdoptionRequest
                 .builder()
-                .adoptionDate(LocalDate.of(2024, 10, 10))
+                .adoptionDate(LocalDate.now().plusDays(1))
                 .petId(1)
                 .adopterId(1)
                 .build();
-
 
         var request = mockMvc.perform(
                 post("/adoption")
