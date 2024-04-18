@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -43,7 +44,7 @@ public class AdoptionControllerTest {
 
     @Test
     @DisplayName("GET /adoption/all - Success")
-    public void getAllAdoption_RunSuccessfully() throws Exception{
+    public void getAllAdoption_ReturnsOk() throws Exception{
         
         var mockAdoption1 = TestFactory.getAdoptionInstance();
         var mockAdoption2 = TestFactory.getAdoptionInstance();
@@ -64,7 +65,7 @@ public class AdoptionControllerTest {
 
     @Test
     @DisplayName("GET /adoption/{id} - Found")
-    public void getAdoptionById_ReturnObject_WithCorrectId() throws Exception {
+    public void getAdoptionById_ReturnOk_WithCorrectId() throws Exception {
         var mockAdoption1 = TestFactory.getAdoptionInstance();
 
         Mockito.doReturn(mockAdoption1)
@@ -78,12 +79,20 @@ public class AdoptionControllerTest {
                 .andExpect(jsonPath("$.petResponse.id", is(1)));
     }
 
-    //TODO: Create Test For GET /adoption/{id} - ID Not Found
+    @Test
+    @DisplayName("GET /adoption/{id} - Not Found")
+    public void getAdoptionById_ReturnNotFound_WithIncorrectId() throws Exception {
+
+        Mockito.doReturn(null)
+                .when(adoptionService).findAdoptionById(1);
+
+        mockMvc.perform(get("/adoption/{id}", 1))
+                .andExpect(status().isNotFound());
+    }
 
     @Test
     @DisplayName("POST /adoption - Success")
     public void addAdoption_ReturnsOk_WithValidObject() throws Exception {
-
         var mockDate = LocalDate.now().plusDays(1);
         var mockAdoptionRequest = AddRequestDTO.AddAdoptionRequest
                 .builder()
@@ -99,7 +108,7 @@ public class AdoptionControllerTest {
         Mockito.doReturn(mockAdopter)
                 .when(adopterService).getAdopterById(1);
         Mockito.doReturn(mockPet)
-                        .when(petService).getPetById(1);
+                .when(petService).getPetById(1);
         Mockito.doReturn(mockAdoption)
                 .when(adoptionService).addNewAdoption(any());
 
@@ -113,8 +122,57 @@ public class AdoptionControllerTest {
     }
 
     @Test
+    @DisplayName("POST /adoption - Success")
+    public void addAdoption_ReturnsBadRequest_WithInvalidObject() throws Exception {
+        var mockDate = LocalDate.now().plusDays(1);
+        var mockAdoptionRequest = AddRequestDTO.AddAdoptionRequest
+                .builder()
+                .adoptionDate(mockDate)
+                .petId(1)
+                .adopterId(1)
+                .build();
+
+        var mockAdopter = TestFactory.getAdopterInstance();
+        var mockPet = TestFactory.getPetInstance();
+        var mockAdoption = new Adoption(1, mockAdopter, mockPet, mockDate);
+
+        Mockito.doReturn(null)
+                .when(adopterService).getAdopterById(anyInt());
+        Mockito.doReturn(null)
+                .when(petService).getPetById(anyInt());
+        Mockito.doReturn(mockAdoption)
+                .when(adoptionService).addNewAdoption(any());
+
+        mockMvc.perform(post("/adoption")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonConverter.fromObject(mockAdoptionRequest)))
+                .andExpect(status().isBadRequest());
+
+    }
+
+
+    @Test
+    @DisplayName("PUT /adoption/{id} - Success")
+    public void updateAdoption_ReturnsOk_WhenIdIsFoundAndBodyIsValidToGenerateAdoption(){
+        //TODO Finish updateAdoption_ReturnsOk_WhenIdIsFoundAndBodyIsValidToGenerateAdoption
+    }
+
+    @Test
+    @DisplayName("PUT /adoption/{id} - Bad Request")
+    public void updateAdoption_ReturnsBadRequest_WhenIdIsFoundAndBodyIsNotValidToGenerateAdoption(){
+        //TODO Finish updateAdoption_ReturnsBadRequest_WhenIdIsFoundAndBodyIsNotValidToGenerateAdoption
+    }
+
+    @Test
+    @DisplayName("PUT /adoption/{id} - Internal Server Error")
+    public void updateAdoption_ReturnsBadRequest_WhenAdoptionCannotBeUpdated(){
+        //TODO Finish updateAdoption_ReturnsBadRequest_WhenAdoptionCannotBeUpdated
+    }
+
+    @Test
     @DisplayName("DELETE /adoption/{id}")
     public void deleteAdoption_ReturnsOk_WhenIdIsFound() throws Exception {
+
         var mockAdoption1 = TestFactory.getAdoptionInstance();
 
         Mockito.doReturn(mockAdoption1)
@@ -150,5 +208,6 @@ public class AdoptionControllerTest {
         mockMvc.perform(delete("/adoption/{id}", 1))
                 .andExpect(status().isInternalServerError());
     }
+
 
 }

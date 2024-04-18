@@ -1,15 +1,16 @@
-package com.expeditors.adoption.exceptions;
+package com.expeditors.adoption.domain.violations;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConstraintViolation {
+public class ConstraintError {
 
     private String fieldName;
     private String message;

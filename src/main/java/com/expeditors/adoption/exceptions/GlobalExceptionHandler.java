@@ -1,5 +1,6 @@
 package com.expeditors.adoption.exceptions;
 
+import com.expeditors.adoption.domain.violations.ConstraintError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,9 +23,9 @@ public class GlobalExceptionHandler {
                     HttpStatus.BAD_REQUEST, 
                     "Validation Error");
 
-            List<ConstraintViolation> errors = exception.getFieldErrors()
+            List<ConstraintError> errors = exception.getFieldErrors()
             .stream()
-            .map(violation -> ConstraintViolation
+            .map(violation -> ConstraintError
                     .builder()
                     .message(violation.getDefaultMessage())
                     .fieldName(violation.getField())

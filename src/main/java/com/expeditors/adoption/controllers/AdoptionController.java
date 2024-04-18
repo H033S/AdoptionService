@@ -77,34 +77,49 @@ public class AdoptionController {
     public ResponseEntity<?> addAdoption(
          @Valid @RequestBody AddRequestDTO.AddAdoptionRequest adoptionRequest){
 
-            var associatedPet = petService.getPetById(adoptionRequest.getPetId());
-            var associatedAdopter = adopterService.getAdopterById(adoptionRequest.getAdopterId());
+        var associatedPet = petService.getPetById(adoptionRequest.getPetId());
+        var associatedAdopter = adopterService.getAdopterById(adoptionRequest.getAdopterId());
+        var adoption = AddRequestDTO.createAdoption(
+                adoptionRequest.getAdoptionDate(),
+                associatedAdopter,
+                associatedPet);
 
-            if(Objects.isNull(associatedPet) ||
-                    Objects.isNull(associatedAdopter)){
-                return ResponseEntity.notFound().build();
-            }
-
-            var adoption = AddRequestDTO.createAdoption(
-                    adoptionRequest.getAdoptionDate(),
-                    associatedAdopter,
-                    associatedPet);
-
+        if(adoption.isModelValid()){
             var adoptionCreatedResult = adoptionService.addNewAdoption(adoption);
             return ResponseEntity.ok(
                     AdoptionResponseDTO.createFromAdoption(adoptionCreatedResult));
+        }
+
+        return ResponseEntity.badRequest()
+                .body(adoption.getModelViolations());
+    }
+
+    @PutMapping("/{adoptionId}")
+    public ResponseEntity<?> updateAdoption(
+            @PathVariable("adoptionId") int adoptionId,
+            @Valid @RequestBody AddRequestDTO.AddAdoptionRequest adoptionRequest){
+
+        var associatedPet = petService.getPetById(adoptionRequest.getPetId());
+        var associatedAdopter = adopterService.getAdopterById(adoptionRequest.getAdopterId());
+        var adoption = AddRequestDTO.createAdoption(
+                adoptionRequest.getAdoptionDate(),
+                associatedAdopter,
+                associatedPet);
+        adoption.setId(adoptionId);
+
+        if(adoption.isModelValid()){
+            var isAdoptionCreatedSuccessfully = adoptionService.updateAdoption(adoption);
+
+            return isAdoptionCreatedSuccessfully ?
+                    ResponseEntity.ok().build():
+                    ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.badRequest()
+                .body(adoption.getModelViolations());
     }
 
 
-
-// TODO: Add Put For Adoption
-//    @PutMapping("/{adoptionId}")
-//    public ResponseEntity<?> updateAdoption(
-//            @PathVariable("adoptionId") int adoptionId,
-//            @RequestBody LocalDate adoptionDate){
-//
-////        return ResponseEntity.internalServerError().build();
-//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAdoption(
