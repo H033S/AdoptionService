@@ -39,6 +39,4 @@ public abstract class Entity implements EntityValidable<Entity> {
         var modelViolationsFound = getModelViolations().size();
         return modelViolationsFound == 0;
     }
-
-
 }
