@@ -37,9 +37,10 @@ public class Adoption extends Entity{
 
     @Override
     public String toString() {
-        return getAdopter().getAdopterName() + 
-        " adopted a " + getPet().getPetType() +
-        " called " + getPet().getPetName() + getAdoptionDate();
+        return "Adoption{" +
+                "adopter=" + adopter +
+                ", pet=" + pet +
+                ", adoptionDate=" + adoptionDate +
+                '}';
     }
-
 }

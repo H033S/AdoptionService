@@ -13,26 +13,23 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-public class AddRequestDTO {
 
-    private AddRequestDTO(){}
 
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    @Builder
-    public static class AddAdoptionRequest{
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+public class AddOrUpdateAdoptionRequestDTO {
 
-        @Future
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        private LocalDate adoptionDate;
+    @Future
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate adoptionDate;
 
-        @NotNull
-        private int adopterId;
+    @NotNull
+    private int adopterId;
 
-        @NotNull
-        private int petId;
-    }
+    @NotNull
+    private int petId;
 
     public static Adoption createAdoption(
             LocalDate adoptionDate,

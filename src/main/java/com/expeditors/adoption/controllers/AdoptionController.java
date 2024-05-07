@@ -1,10 +1,10 @@
 package com.expeditors.adoption.controllers;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.expeditors.adoption.dto.adoption.AddRequestDTO;
-import com.expeditors.adoption.dto.adoption.AdoptionResponseDTO;
+import com.expeditors.adoption.dto.adoption.AddOrUpdateAdoptionRequestDTO;
 import com.expeditors.adoption.service.AdopterService;
 import com.expeditors.adoption.service.AdoptionService;
 import com.expeditors.adoption.service.PetService;
@@ -37,11 +37,9 @@ public class AdoptionController {
     @GetMapping("/all")
     public ResponseEntity<?> listAdoptions(){
 
-        return ResponseEntity.ok(
-                adoptionService.findAllAdoptions()
-                        .stream()
-                        .map(AdoptionResponseDTO::createFromAdoption)
-                        .toList());
+        return ResponseEntity
+                .ok()
+                .body(adoptionService.getAllEntities());
     }
 
     @GetMapping("/all/{adoptionDate}")
@@ -49,12 +47,12 @@ public class AdoptionController {
             @PathVariable("adoptionDate")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate adoptionDate){
 
-        return ResponseEntity.ok(
-                adoptionService
-                        .findAllAdoptions()
+        return ResponseEntity
+                .ok()
+                .body(adoptionService
+                        .getAllEntities()
                         .stream()
                         .filter(adoption -> adoption.getAdoptionDate().equals(adoptionDate))
-                        .map(AdoptionResponseDTO::createFromAdoption)
                         .toList());
     }
 
@@ -62,32 +60,35 @@ public class AdoptionController {
     public ResponseEntity<?> getAdoption(
             @PathVariable("id") int adoptionId){
 
-        var adoption = adoptionService.findAdoptionById(adoptionId);
+        var adoption = adoptionService.getEntityById(adoptionId);
 
         if(Objects.isNull(adoption)) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity
+                    .notFound()
+                    .build();
         }
 
-        return ResponseEntity.ok(
-                AdoptionResponseDTO.createFromAdoption(adoption)
-        );
+        return ResponseEntity
+                .ok()
+                .body(adoption);
     }
 
     @PostMapping
     public ResponseEntity<?> addAdoption(
-         @Valid @RequestBody AddRequestDTO.AddAdoptionRequest adoptionRequest){
+         @Valid @RequestBody AddOrUpdateAdoptionRequestDTO adoptionRequest){
 
-        var associatedPet = petService.getPetById(adoptionRequest.getPetId());
-        var associatedAdopter = adopterService.getAdopterById(adoptionRequest.getAdopterId());
-        var adoption = AddRequestDTO.createAdoption(
+        var associatedPet = petService.getEntityById(adoptionRequest.getPetId());
+        var associatedAdopter = adopterService.getEntityById(adoptionRequest.getAdopterId());
+        var adoption = AddOrUpdateAdoptionRequestDTO.createAdoption(
                 adoptionRequest.getAdoptionDate(),
                 associatedAdopter,
                 associatedPet);
 
         if(adoption.isModelValid()){
-            var adoptionCreatedResult = adoptionService.addNewAdoption(adoption);
-            return ResponseEntity.ok(
-                    AdoptionResponseDTO.createFromAdoption(adoptionCreatedResult));
+            var adoptionCreatedResult = adoptionService.addEntity(adoption);
+            return ResponseEntity
+                    .created(URI.create("/adoption/" + adoptionCreatedResult.getId()))
+                    .body(adoptionCreatedResult);
         }
 
         return ResponseEntity.badRequest()
@@ -97,22 +98,28 @@ public class AdoptionController {
     @PutMapping("/{adoptionId}")
     public ResponseEntity<?> updateAdoption(
             @PathVariable("adoptionId") int adoptionId,
-            @Valid @RequestBody AddRequestDTO.AddAdoptionRequest adoptionRequest){
+            @Valid @RequestBody AddOrUpdateAdoptionRequestDTO adoptionRequest){
 
-        var associatedPet = petService.getPetById(adoptionRequest.getPetId());
-        var associatedAdopter = adopterService.getAdopterById(adoptionRequest.getAdopterId());
-        var adoption = AddRequestDTO.createAdoption(
+        var associatedPet = petService.getEntityById(adoptionRequest.getPetId());
+        var associatedAdopter = adopterService.getEntityById(adoptionRequest.getAdopterId());
+        var adoption = AddOrUpdateAdoptionRequestDTO.createAdoption(
                 adoptionRequest.getAdoptionDate(),
                 associatedAdopter,
                 associatedPet);
         adoption.setId(adoptionId);
 
         if(adoption.isModelValid()){
-            var isAdoptionCreatedSuccessfully = adoptionService.updateAdoption(adoption);
+            var isAdoptionCreatedSuccessfully = adoptionService.updateEntity(adoption);
 
-            return isAdoptionCreatedSuccessfully ?
-                    ResponseEntity.ok().build():
-                    ResponseEntity.internalServerError().build();
+            if(isAdoptionCreatedSuccessfully){
+                return ResponseEntity
+                        .noContent()
+                        .build();
+            }
+
+            return ResponseEntity
+                    .internalServerError()
+                    .build();
         }
 
         return ResponseEntity.badRequest()
@@ -125,16 +132,22 @@ public class AdoptionController {
     public ResponseEntity<?> deleteAdoption(
             @PathVariable("id") int adoptionId){
 
-        var adoption = adoptionService.findAdoptionById(adoptionId);
+        var adoption = adoptionService.getEntityById(adoptionId);
 
         if(Objects.isNull(adoption)){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity
+                    .notFound()
+                    .build();
         }
 
-        if(adoptionService.deleteAdoption(adoptionId)){
-            return ResponseEntity.ok().build();
+        if(adoptionService.deleteEntity(adoptionId)){
+            return ResponseEntity
+                    .noContent()
+                    .build();
         }
 
-        return ResponseEntity.internalServerError().build();
+        return ResponseEntity
+                .internalServerError()
+                .build();
     }
 }

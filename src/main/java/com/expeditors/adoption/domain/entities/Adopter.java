@@ -26,4 +26,10 @@ public class Adopter extends Entity {
             this.phoneNumber = phoneNumber;
     }
 
+    @Override
+    public String toString() {
+        return "Adopter{" +
+                "adopterName='" + adopterName + '\'' +
+                '}';
+    }
 }

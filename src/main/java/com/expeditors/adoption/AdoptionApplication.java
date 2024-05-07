@@ -1,6 +1,8 @@
 package com.expeditors.adoption;
 
 import com.expeditors.adoption.domain.entities.*;
+import com.expeditors.adoption.service.AdopterService;
+import com.expeditors.adoption.service.PetService;
 import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,10 +23,19 @@ public class AdoptionApplication {
 class  RunApp implements CommandLineRunner{
 
 	private final AdoptionServiceImpl adoptionService;
+	private final AdopterService adopterService;
+	private final PetService petService;
 
-	public RunApp(AdoptionServiceImpl adoptionService) {
+
+	public RunApp(
+			AdoptionServiceImpl adoptionService,
+			AdopterService adopterService,
+			PetService petService) {
+
 		this.adoptionService = adoptionService;
-	}
+        this.adopterService = adopterService;
+        this.petService = petService;
+    }
 
 	@Override
 	public void run(String... args)   {
@@ -39,11 +50,22 @@ class  RunApp implements CommandLineRunner{
 		 var ld2 = LocalDate.now().minusDays(4);
 		 var ld3 = LocalDate.now().minusDays(5);
 
-		 adoptionService.addNewAdoption( new Adoption(0, adopter1, pet1, ld1));
-		 adoptionService.addNewAdoption( new Adoption(0, adopter2, pet2, ld2));
-		 adoptionService.addNewAdoption( new Adoption(0, adopter2, pet3, ld3));
+		 var adoption1 = new Adoption(0, adopter1, pet1, ld1);
+		 var adoption2 = new Adoption(0, adopter2, pet2, ld2);
+		 var adoption3 = new Adoption(0, adopter2, pet3, ld3);
 
-		 var adoptions  = adoptionService.findAllAdoptions();
+		 petService.addEntity(pet1);
+		 petService.addEntity(pet2);
+		 petService.addEntity(pet3);
+
+		 adopterService.addEntity(adopter1);
+		 adopterService.addEntity(adopter2);
+
+		 adoptionService.addEntity( adoption1);
+		 adoptionService.addEntity( adoption2);
+		 adoptionService.addEntity( adoption3);
+
+		 var adoptions  = adoptionService.getAllEntities();
 		 System.out.println();
 		 adoptions.forEach(System.out::println);
 		 System.out.println();

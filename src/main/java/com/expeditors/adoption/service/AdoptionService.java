@@ -7,16 +7,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface AdoptionService {
-    Adoption addNewAdoption(Adoption adoption);
-
-    boolean updateAdoption(Adoption adoption);
-
-    boolean deleteAdoption(int id);
-
-    Adoption findAdoptionById(int id);
-
-    List<Adoption> findAllAdoptions();
+public interface AdoptionService
+        extends BaseService<Adoption> {
 
     List<Adopter> getAdoptersSortedBy(Comparator<Adoption> comparator);
 
