@@ -1,21 +1,17 @@
 package com.expeditors.adoption.service.implementation;
 
-import com.expeditors.adoption.dao.CrudDAO;
+import com.expeditors.adoption.dao.BaseDAO;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.service.AdopterService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdopterServiceImpl implements AdopterService {
+public class AdopterServiceImpl
+        extends AbstractBaseService<Adopter>
+        implements AdopterService {
 
-    private final CrudDAO<Adopter> adopterDAO;
-
-    public AdopterServiceImpl(CrudDAO<Adopter> adopterRepository) {
-        this.adopterDAO = adopterRepository;
+    public AdopterServiceImpl(BaseDAO<Adopter> adopterDAO) {
+        super(adopterDAO);
     }
 
-    @Override
-    public Adopter getAdopterById(int adopterId) {
-        return adopterDAO.findById(adopterId);
-    }
 }

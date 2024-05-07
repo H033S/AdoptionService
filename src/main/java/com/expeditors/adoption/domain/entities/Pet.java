@@ -31,4 +31,11 @@ public class Pet extends Entity{
         this.petName = petName;
     }
 
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "petBreed=" + petBreed +
+                ", petName='" + petName + '\'' +
+                '}';
+    }
 }

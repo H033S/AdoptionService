@@ -1,6 +1,6 @@
 package com.expeditors.adoption.dao.inmemory;
 
-import com.expeditors.adoption.dao.CrudDAO;
+import com.expeditors.adoption.dao.BaseDAO;
 import com.expeditors.adoption.domain.Entity;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class InMemoryAbstractCrudDAO <TEntity extends Entity> implements CrudDAO<TEntity> {
+public abstract class InMemoryAbstractBaseDAO<TEntity extends Entity> implements BaseDAO<TEntity> {
     private final Map<Integer,TEntity> entities;
     private static int nextId;
 
@@ -17,7 +17,7 @@ public abstract class InMemoryAbstractCrudDAO <TEntity extends Entity> implement
         nextId = 0;
     }
 
-    public InMemoryAbstractCrudDAO() {
+    public InMemoryAbstractBaseDAO() {
         entities = new ConcurrentHashMap<>();
     }
 
@@ -45,12 +45,6 @@ public abstract class InMemoryAbstractCrudDAO <TEntity extends Entity> implement
 
     public List<TEntity> findAll() {
         return entities.values().stream().toList();
-    }
-
-    @Override
-    public void clear() {
-        nextId = 0;
-        entities.clear();
     }
 
 }

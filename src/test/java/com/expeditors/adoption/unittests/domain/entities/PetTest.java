@@ -1,8 +1,12 @@
-package com.expeditors.adoption.domain.entities;
+package com.expeditors.adoption.unittests.domain.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.expeditors.adoption.domain.entities.Pet;
+import com.expeditors.adoption.domain.entities.PetBreed;
+import com.expeditors.adoption.domain.entities.PetType;
 import org.junit.jupiter.api.Test;
 
 
@@ -12,8 +16,8 @@ public class PetTest {
     public void createPet_ValidationReturnTrue_WithValidObject(){
         Pet pet = new Pet(
             1,
-            PetBreed.SIAMESE, 
-            PetType.CAT, 
+            PetBreed.SIAMESE,
+            PetType.CAT,
             "Suki");
 
         assertTrue(pet.isModelValid());

@@ -1,5 +1,6 @@
-package com.expeditors.adoption.domain.entities;
+package com.expeditors.adoption.unittests.domain.entities;
 
+import com.expeditors.adoption.domain.entities.Adopter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

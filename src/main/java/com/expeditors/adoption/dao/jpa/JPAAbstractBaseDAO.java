@@ -1,7 +1,7 @@
 package com.expeditors.adoption.dao.jpa;
 
 
-import com.expeditors.adoption.dao.CrudDAO;
+import com.expeditors.adoption.dao.BaseDAO;
 import com.expeditors.adoption.domain.Entity;
 
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class JPAAbstractCrudDAO<TEntity extends Entity> implements CrudDAO<TEntity> {
+public abstract class JPAAbstractBaseDAO<TEntity extends Entity> implements BaseDAO<TEntity> {
     private final Map<Integer,TEntity> entities;
     private static int nextId;
 
@@ -18,7 +18,7 @@ public abstract class JPAAbstractCrudDAO<TEntity extends Entity> implements Crud
         nextId = 0;
     }
 
-    public JPAAbstractCrudDAO() {
+    public JPAAbstractBaseDAO() {
         entities = new HashMap<>();
     }
 
@@ -45,13 +45,4 @@ public abstract class JPAAbstractCrudDAO<TEntity extends Entity> implements Crud
     public List<TEntity> findAll() {
         return entities.values().stream().toList();
     }
-
-    @Override
-    public void clear() {
-       nextId = 0;
-       entities.clear();
-    }
-
-    
-
 }
