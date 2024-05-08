@@ -1,8 +1,10 @@
-package com.expeditors.adoption.dao.jdbc;
+package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate;
 
 import com.expeditors.adoption.dao.BaseDAO;
-import com.expeditors.adoption.dao.jdbc.templates.*;
+import com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates.*;
 import com.expeditors.adoption.domain.entities.Adopter;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -10,6 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;
+
+@Repository
+@Profile({JDBC, JDBC_TEST})
 public class AdopterJdbcDao
         implements BaseDAO<Adopter> {
 
@@ -23,7 +30,7 @@ public class AdopterJdbcDao
     public List<Adopter> findAll() {
 
         String sql = """
-        SELECT ID, NAME, PHONE_NUMBER FROM ADOPT_APP.PUBLIC.ADOPTER
+        SELECT ID, NAME, PHONE_NUMBER FROM ADOPTER
         """;
 
         JdbcListTemplate<Adopter> template = new JdbcListTemplate<>(datasource) {
@@ -44,7 +51,7 @@ public class AdopterJdbcDao
     public Adopter findById(int id) {
 
         String sql = """
-        SELECT ID, NAME, PHONE_NUMBER FROM ADOPT_APP.PUBLIC.ADOPTER
+        SELECT ID, NAME, PHONE_NUMBER FROM ADOPTER
         WHERE ID = ?
         """;
 
@@ -66,7 +73,7 @@ public class AdopterJdbcDao
     public Adopter insert(Adopter adopter) {
 
         String sql = """
-        INSERT INTO ADOPT_APP.PUBLIC.ADOPTER (NAME, PHONE_NUMBER)
+        INSERT INTO ADOPTER (NAME, PHONE_NUMBER)
         VALUES (?, ?)
         """;
 
@@ -87,7 +94,7 @@ public class AdopterJdbcDao
     public boolean update(Adopter adopter) {
 
         String sql = """
-        UPDATE ADOPT_APP.PUBLIC.ADOPTER SET
+        UPDATE ADOPTER SET
             NAME = ?,
             PHONE_NUMBER = ?
         WHERE ID = ?
@@ -111,15 +118,9 @@ public class AdopterJdbcDao
     public boolean delete(int id) {
 
         String sql = """
-        DELETE FROM ADOPT_APP.PUBLIC.ADOPTER WHERE ID = ?
+        DELETE FROM ADOPTER WHERE ID = ?
         """;
-
-        JdbcDeleteTemplate template = new JdbcDeleteTemplate(datasource) {
-            @Override
-            public boolean delete(int id, String sql) {
-                return super.delete(id, sql);
-            }
-        };
+        JdbcDeleteTemplate template = new JdbcDeleteTemplate(datasource) {};
         return template.delete(id, sql);
     }
 }

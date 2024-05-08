@@ -1,4 +1,4 @@
-package com.expeditors.adoption.dao.jdbc.templates;
+package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates;
 
 import com.expeditors.adoption.domain.Entity;
 
@@ -23,7 +23,7 @@ public abstract class JdbcInsertTemplate<TEntity extends Entity>
 
             try(ResultSet rSet = pStmt.getGeneratedKeys()){
                 rSet.next();
-                entity.setId(rSet.getInt(rSet.getInt(1)));
+                entity.setId(rSet.getInt(1));
             }
 
         } catch (SQLException e) {

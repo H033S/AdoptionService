@@ -9,5 +9,6 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.IN_MEMORY;
 
 @Repository
 @Profile(IN_MEMORY)
-public class InMemoryAdopterDAO extends InMemoryAbstractBaseDAO<Adopter> {
+public class InMemoryAdopterDAO
+        extends InMemoryAbstractBaseDAO<Adopter> {
 }

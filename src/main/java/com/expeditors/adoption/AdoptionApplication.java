@@ -1,5 +1,6 @@
 package com.expeditors.adoption;
 
+import com.expeditors.adoption.dao.utils.profiles.Profiles;
 import com.expeditors.adoption.domain.entities.*;
 import com.expeditors.adoption.service.AdopterService;
 import com.expeditors.adoption.service.PetService;
@@ -7,6 +8,7 @@ import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -20,6 +22,7 @@ public class AdoptionApplication {
 }
 
 @Component
+@Profile("!" + Profiles.JDBC_TEST)
 class  RunApp implements CommandLineRunner{
 
 	private final AdoptionServiceImpl adoptionService;

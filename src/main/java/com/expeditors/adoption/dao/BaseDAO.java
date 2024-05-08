@@ -8,11 +8,8 @@ import java.util.List;
 
 public interface BaseDAO<TEntity extends Entity> {
     List<TEntity> findAll();
-    TEntity findById(int i);
+    TEntity findById(int id);
     TEntity insert(TEntity tEntity);
-
     boolean update(TEntity tEntity);
-
     boolean delete(int i);
-
 }

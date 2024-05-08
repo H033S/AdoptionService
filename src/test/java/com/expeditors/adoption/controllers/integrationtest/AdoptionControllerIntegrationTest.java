@@ -1,26 +1,13 @@
-package com.expeditors.adoption.integrationtest.controllers;
+package com.expeditors.adoption.controllers.integrationtest;
 
-import com.expeditors.adoption.domain.entities.Adoption;
-import com.expeditors.adoption.dto.adoption.AddOrUpdateAdoptionRequestDTO;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-
-import java.net.URI;
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IntegrationAdoptionControllerTest {
+public class AdoptionControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
