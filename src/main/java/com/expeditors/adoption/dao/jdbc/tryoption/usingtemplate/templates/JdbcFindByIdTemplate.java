@@ -1,7 +1,6 @@
-package com.expeditors.adoption.dao.jdbc.templates;
+package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates;
 
 import com.expeditors.adoption.domain.Entity;
-import com.expeditors.adoption.domain.entities.Adopter;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class InMemoryAbstractBaseDAO<TEntity extends Entity> implements BaseDAO<TEntity> {
+public abstract class InMemoryAbstractBaseDAO<TEntity extends Entity>
+        implements BaseDAO<TEntity> {
+
     private final Map<Integer,TEntity> entities;
     private static int nextId;
 

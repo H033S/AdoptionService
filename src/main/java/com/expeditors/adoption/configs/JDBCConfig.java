@@ -1,34 +1,28 @@
 package com.expeditors.adoption.configs;
 
-import com.expeditors.adoption.dao.BaseDAO;
-import com.expeditors.adoption.dao.jdbc.AdopterJdbcDao;
-import com.expeditors.adoption.dao.jdbc.AdopterJdbcDaoWithoutTemplate;
 import com.expeditors.adoption.dao.utils.profiles.Profiles;
-import com.expeditors.adoption.domain.entities.Adopter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;
+
+@Configuration
+@Profile("!" + JDBC_TEST)
 public class JDBCConfig {
-    
-    @Bean
-    @Profile(Profiles.JDBC)
-    public BaseDAO<Adopter> getAdopterDAO(DataSource source){
-        return new AdopterJdbcDao(source);
-    }
 
-    @Bean
-    public Connection getConnection(
+    @Bean("connectionForJDBC")
+    @Profile(JDBC)
+    public DataSource getConnection(
             @Value(value = "${expeditors.db.connection}") String dbUrl,
             @Value(value = "${expeditors.db.username}") String dbUser,
-            @Value(value = "${expeditors.db.password}") String dbPassword) throws SQLException {
+            @Value(value = "${expeditors.db.password}") String dbPassword) {
 
-        return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        return new DriverManagerDataSource(dbUrl, dbUser, dbPassword);
     }
-
 }
