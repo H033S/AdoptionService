@@ -1,162 +1,125 @@
 package com.expeditors.adoption.dao.jdbc;
 
 import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.jdbc.templates.*;
 import com.expeditors.adoption.domain.entities.Adopter;
 
 import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class AdopterJdbcDao
         implements BaseDAO<Adopter> {
 
-    private final DataSource source;
+    private final DataSource datasource;
 
-    public AdopterJdbcDao( DataSource source) {
-        this.source = source;
-    }
-
-    private Connection getConnection() throws SQLException {
-        return source.getConnection();
+    public AdopterJdbcDao(DataSource datasource) {
+        this.datasource = datasource;
     }
 
     @Override
-    public Adopter insert(Adopter adopter) {
+    public List<Adopter> findAll() {
 
         String sql = """
-        INSERT INTO ADOPTAPP.PUBLIC.ADOPTER (NAME, PHONE_NUMBER)
-        VALUES (?, ?)
+        SELECT ID, NAME, PHONE_NUMBER FROM ADOPT_APP.PUBLIC.ADOPTER
         """;
 
-        try(
-                Connection conn = getConnection();
-                PreparedStatement pStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-                ) {
-
-            pStmt.setString(1, adopter.getAdopterName());
-            pStmt.setString(2, adopter.getPhoneNumber());
-            pStmt.executeUpdate();
-
-            try(ResultSet rSet = pStmt.getGeneratedKeys()){
-                rSet.next();
-                adopter.setId(rSet.getInt(rSet.getInt(1)));
+        JdbcListTemplate<Adopter> template = new JdbcListTemplate<>(datasource) {
+            @Override
+            public Adopter mapItem(ResultSet rSet) throws SQLException {
+                return new Adopter(
+                        rSet.getInt("id"),
+                        rSet.getString("name"),
+                        rSet.getString("phone_number")
+                );
             }
+        };
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return adopter;
-    }
-
-    @Override
-    public boolean update(Adopter adopter) {
-
-        String sql = """
-        UPDATE ADOPTAPP.PUBLIC.ADOPTER SET
-            NAME = ?,
-            PHONE_NUMBER = ?
-        WHERE ID = ?
-        """;
-        int numberOfRowsUpdated = 0;
-
-        try(
-                Connection conn = getConnection();
-                PreparedStatement pStmt = conn.prepareStatement(sql);
-                ) {
-            pStmt.setString(1, adopter.getAdopterName());
-            pStmt.setString(2, adopter.getPhoneNumber());
-            pStmt.setInt(3, adopter.getId());
-            numberOfRowsUpdated = pStmt.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return numberOfRowsUpdated > 0;
+        return template.findAll(sql);
     }
 
     @Override
     public Adopter findById(int id) {
 
         String sql = """
-        SELECT ID, NAME, PHONE_NUMBER FROM ADOPTAPP.PUBLIC.ADOPTER
+        SELECT ID, NAME, PHONE_NUMBER FROM ADOPT_APP.PUBLIC.ADOPTER
         WHERE ID = ?
         """;
-        Adopter adopter = null;
 
-        try (
-                Connection conn = getConnection();
-                PreparedStatement pStmt = conn.prepareStatement(sql);
-                ) {
-            pStmt.setInt(1, id);
-
-            try(ResultSet rSet = pStmt.executeQuery()){
-
-                rSet.next();
-                adopter = new Adopter(
+        JdbcFindByIdTemplate<Adopter> template = new JdbcFindByIdTemplate<>(datasource) {
+            @Override
+            public Adopter mapItem(ResultSet rSet) throws SQLException {
+                return new Adopter(
                         rSet.getInt("id"),
                         rSet.getString("name"),
                         rSet.getString("phone_number")
                 );
             }
+        };
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return adopter;
+        return template.findById(id, sql);
     }
 
     @Override
-    public List<Adopter> findAll() {
+    public Adopter insert(Adopter adopter) {
+
         String sql = """
-        SELECT ID, NAME, PHONE_NUMBER FROM ADOPTAPP.PUBLIC.ADOPTER
+        INSERT INTO ADOPT_APP.PUBLIC.ADOPTER (NAME, PHONE_NUMBER)
+        VALUES (?, ?)
         """;
-        List<Adopter> adopters = new ArrayList<>();
 
-        try(
-                Connection conn = getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rSet = stmt.executeQuery(sql);
-                ) {
+        JdbcInsertTemplate<Adopter> template = new JdbcInsertTemplate<>(datasource) {
+            @Override
+            public void prepareStatement(
+                    PreparedStatement pStmt,
+                    Adopter adopterToInsert) throws SQLException {
 
-            while (rSet.next()){
-                var adopter = new Adopter(
-                        rSet.getInt("id"),
-                        rSet.getString("name"),
-                        rSet.getString("phone_number")
-                );
-                adopters.add(adopter);
+                pStmt.setString(1, adopterToInsert.getAdopterName());
+                pStmt.setString(2, adopterToInsert.getPhoneNumber());
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return adopters;
+        };
+        return template.insert(adopter, sql);
     }
 
     @Override
-    public boolean delete(int i) {
+    public boolean update(Adopter adopter) {
 
         String sql = """
-        DELETE FROM ADOPTAPP.PUBLIC.ADOPTER WHERE ID = ?
+        UPDATE ADOPT_APP.PUBLIC.ADOPTER SET
+            NAME = ?,
+            PHONE_NUMBER = ?
+        WHERE ID = ?
         """;
-        int numberOfRowsDeleted = 0;
 
-        try(
-                Connection conn = getConnection();
-                PreparedStatement pStmt = conn.prepareStatement(sql);
-                ){
-            numberOfRowsDeleted = pStmt.executeUpdate();
+        JdbcUpdateTemplate<Adopter> template = new JdbcUpdateTemplate<>(datasource) {
+            @Override
+            public void prepareStatement(
+                    PreparedStatement pStmt,
+                    Adopter adopterToUpdate) throws SQLException {
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+                pStmt.setString(1, adopterToUpdate.getAdopterName());
+                pStmt.setString(2, adopterToUpdate.getPhoneNumber());
+                pStmt.setInt(3, adopterToUpdate.getId());
+            }
+        };
+        return template.update(adopter, sql);
+    }
 
-        return numberOfRowsDeleted > 0;
+    @Override
+    public boolean delete(int id) {
+
+        String sql = """
+        DELETE FROM ADOPT_APP.PUBLIC.ADOPTER WHERE ID = ?
+        """;
+
+        JdbcDeleteTemplate template = new JdbcDeleteTemplate(datasource) {
+            @Override
+            public boolean delete(int id, String sql) {
+                return super.delete(id, sql);
+            }
+        };
+        return template.delete(id, sql);
     }
 }
