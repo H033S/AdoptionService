@@ -2,6 +2,7 @@ package com.expeditors.adoption.configs;
 
 import com.expeditors.adoption.dao.BaseDAO;
 import com.expeditors.adoption.dao.jdbc.AdopterJdbcDao;
+import com.expeditors.adoption.dao.jdbc.AdopterJdbcDaoWithoutTemplate;
 import com.expeditors.adoption.dao.utils.profiles.Profiles;
 import com.expeditors.adoption.domain.entities.Adopter;
 import org.springframework.beans.factory.annotation.Value;
