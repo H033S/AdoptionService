@@ -22,9 +22,9 @@ CREATE TABLE ADOPTION(
 
                          ID SERIAL PRIMARY KEY,
                          ADOPTION_DATE DATE NOT NULL,
-                         PET_ID SERIAL,
-                         ADOPTER_ID SERIAL,
+                         PET_ID SERIAL NOT NULL,
+                         ADOPTER_ID SERIAL NOT NULL,
 
-                         FOREIGN KEY (PET_ID)     REFERENCES PET(ID),
-                         FOREIGN KEY (ADOPTER_ID) REFERENCES ADOPTER(ID)
+                         FOREIGN KEY (PET_ID)     REFERENCES PET(ID) ON DELETE CASCADE,
+                         FOREIGN KEY (ADOPTER_ID) REFERENCES ADOPTER(ID) ON DELETE CASCADE
 );

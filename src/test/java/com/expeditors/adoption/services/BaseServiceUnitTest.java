@@ -18,7 +18,6 @@ public abstract class BaseServiceUnitTest<TEntity extends Entity> {
 
     protected BaseDAO<TEntity> baseDAO;
     protected BaseService<TEntity> baseService;
-
     protected TEntity mockEntity;
 
 

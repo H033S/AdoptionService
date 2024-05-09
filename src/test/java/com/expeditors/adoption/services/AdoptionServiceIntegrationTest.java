@@ -81,14 +81,18 @@ public class AdoptionServiceIntegrationTest {
     @Test
     void deleteEntity_RunSuccessfully_WhenIdIsValid(){
 
+        var numberOfAdoptions = adoptionService.getAllEntities().size();
         Assertions.assertTrue(adoptionService.deleteEntity(1));
+        Assertions.assertEquals(numberOfAdoptions - 1, adoptionService.getAllEntities().size());
     }
 
     @Test
     @Sql(scripts = {"/sql/h2/0-schema.sql"})
     void deleteEntity_RunSuccessfully_WhenIdIsNotValid(){
 
+        var numberOfAdoptions = adoptionService.getAllEntities().size();
         Assertions.assertFalse(adoptionService.deleteEntity(1));
+        Assertions.assertEquals(numberOfAdoptions, adoptionService.getAllEntities().size());
     }
 
 }
