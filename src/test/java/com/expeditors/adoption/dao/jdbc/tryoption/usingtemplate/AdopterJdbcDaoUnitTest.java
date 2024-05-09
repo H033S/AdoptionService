@@ -52,7 +52,7 @@ public class AdopterJdbcDaoUnitTest {
     }
 
     @Test
-    void insertAdoption_RunSuccessfully(){
+    void insertPet_RunSuccessfully(){
 
         var adopterToInsert = TestFactory.getAdopterInstance();
         Adopter adopter = adopterDao.insert(adopterToInsert);
@@ -60,7 +60,7 @@ public class AdopterJdbcDaoUnitTest {
     }
 
     @Test
-    void updateAdoption_RunSuccessfully(){
+    void updatePet_RunSuccessfully(){
 
         var adopter = TestFactory.getAdopterInstance();
         boolean updateResult = adopterDao.update(adopter);

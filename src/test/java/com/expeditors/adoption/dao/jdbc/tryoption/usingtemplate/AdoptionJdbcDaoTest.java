@@ -1,6 +1,6 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate;
 
-import com.expeditors.adoption.domain.entities.*;
+import com.expeditors.adoption.domain.entities.Adoption;
 import com.expeditors.adoption.factory.TestFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;

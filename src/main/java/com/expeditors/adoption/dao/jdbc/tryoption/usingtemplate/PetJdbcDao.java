@@ -98,8 +98,8 @@ public class PetJdbcDao implements BaseDAO<Pet> {
         String sql = """
                 UPDATE PET SET
                     NAME = ?,
-                    TYPE = ?,
-                    NAME = ?
+                    BREED = ?,
+                    TYPE = ?
                 WHERE ID = ?
                 """;
 
