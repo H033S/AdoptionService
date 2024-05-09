@@ -44,7 +44,7 @@ public class AdoptionJdbcDao
                     INNER JOIN ADOPTER ON ADOPTER.ID = ADOPTION.ADOPTER_ID
                     INNER JOIN PET ON PET.ID = ADOPTION.PET_ID
                 """;
-        JdbcListTemplate<Adoption> template = new JdbcListTemplate<Adoption>(dataSource) {
+        JdbcListTemplate<Adoption> template = new JdbcListTemplate<>(dataSource) {
             @Override
             public Adoption mapItem(ResultSet rSet) throws SQLException {
                 return createAdoptionFromResultSet(rSet);
