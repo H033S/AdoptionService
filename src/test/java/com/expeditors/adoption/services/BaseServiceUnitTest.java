@@ -1,19 +1,10 @@
-package com.expeditors.adoption.unittests.services;
+package com.expeditors.adoption.services;
 
 import com.expeditors.adoption.dao.BaseDAO;
 import com.expeditors.adoption.domain.Entity;
-import com.expeditors.adoption.service.AdoptionService;
 import com.expeditors.adoption.service.BaseService;
-import com.expeditors.adoption.service.implementation.AbstractBaseService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 
-public abstract class BaseServiceTest<TEntity extends Entity> {
+public abstract class BaseServiceUnitTest<TEntity extends Entity> {
 
     protected BaseDAO<TEntity> baseDAO;
     protected BaseService<TEntity> baseService;
@@ -115,15 +106,6 @@ public abstract class BaseServiceTest<TEntity extends Entity> {
 
         assertTrue(baseService.deleteEntity(1));
     }
-
-
-
-
-
-
-
-
-
 
     @Test
     public void findAllAdoptions_RunSuccessful(){

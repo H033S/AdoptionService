@@ -1,16 +1,13 @@
-package com.expeditors.adoption.unittests.domain.entities;
+package com.expeditors.adoption.domain.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.expeditors.adoption.domain.entities.Pet;
-import com.expeditors.adoption.domain.entities.PetBreed;
-import com.expeditors.adoption.domain.entities.PetType;
 import org.junit.jupiter.api.Test;
 
 
-public class PetTest {
+public class PetUnitTest {
     
     @Test
     public void createPet_ValidationReturnTrue_WithValidObject(){

@@ -1,11 +1,10 @@
-package com.expeditors.adoption.unittests.domain.entities;
+package com.expeditors.adoption.domain.entities;
 
-import com.expeditors.adoption.domain.entities.Adopter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AdopterTest {
+public class AdopterUnitTest {
     
     @Test
     public void createAdopter_ValidationReturnTrue_WithValidObject(){

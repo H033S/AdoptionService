@@ -1,6 +1,7 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate;
 
 import com.expeditors.adoption.domain.entities.*;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,26 +52,40 @@ public class AdoptionJdbcDaoTest {
 
     @Test
     void insertAdoption_RunSuccessfully(){
-        var adoptionToInsert = new Adoption(
-                0,
-                new Adopter(
-                        1,
-                        "Antonio",
-                        "123-213-1234"
-                ),
-                new Pet(
-                        1,
-                        PetBreed.POODLE,
-                        PetType.DOG,
-                        "Suki"
-                ),
-                LocalDate.now()
-        );
+
+        var adoptionToInsert = createAdoption();
 
         Adoption adoption = adoptionDao.insert(adoptionToInsert);
         Assertions.assertEquals(4, adoption.getId());
     }
 
+
+    @Test
+    void updateAdoption_RunSuccessfully(){
+
+        var adoption = createAdoption();
+
+        boolean updateResult = adoptionDao.update(adoption);
+        Assertions.assertTrue(updateResult);
+    }
+
+    private Adoption createAdoption() {
+        return new Adoption(
+                1,
+                new Adopter(
+                        2,
+                        "Jennifer Lopez",
+                        "123-123-4567"
+                ),
+                new Pet(
+                        4,
+                        PetBreed.POODLE,
+                        PetType.DOG,
+                        "Yak"
+                ),
+                LocalDate.now()
+        );
+    }
 
 }
 
