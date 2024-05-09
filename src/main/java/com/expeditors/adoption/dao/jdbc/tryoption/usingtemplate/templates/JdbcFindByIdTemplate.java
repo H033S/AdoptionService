@@ -26,8 +26,12 @@ public abstract class JdbcFindByIdTemplate<TEntity extends Entity>
 
             try(ResultSet rSet = pStmt.executeQuery()){
 
-                rSet.next();
-                entity = mapItem(rSet);
+                if(rSet.next()){
+                    entity = mapItem(rSet);
+                }
+                else {
+                    return null;
+                }
             }
 
         } catch (SQLException e) {

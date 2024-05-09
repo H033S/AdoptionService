@@ -1,4 +1,4 @@
-package com.expeditors.adoption.unittests.controllers;
+package com.expeditors.adoption.controllers;
 
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
@@ -11,7 +11,6 @@ import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
 import com.expeditors.adoption.service.implementation.PetServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AdoptionControllerTest {
+public class AdoptionControllerUnitTest {
     
     @MockBean
     private AdoptionServiceImpl adoptionService;

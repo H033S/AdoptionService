@@ -1,12 +1,10 @@
-package com.expeditors.adoption.unittests.services;
+package com.expeditors.adoption.services;
 
 import com.expeditors.adoption.dao.BaseDAO;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
-import com.expeditors.adoption.domain.entities.Pet;
 import com.expeditors.adoption.factory.TestFactory;
 import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
-import com.expeditors.adoption.service.implementation.PetServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -27,8 +24,8 @@ import static org.hamcrest.Matchers.containsInRelativeOrder;
 
 @Nested
 @ExtendWith(MockitoExtension.class)
-class AdoptionServiceTest
-    extends BaseServiceTest<Adoption>{
+class AdoptionServiceUnitTest
+    extends BaseServiceUnitTest<Adoption> {
 
     @Mock
     private BaseDAO<Adoption> adoptionBaseDAO;
