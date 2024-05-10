@@ -1,9 +1,10 @@
-package com.expeditors.adoption.services;
+package com.expeditors.adoption.services.adopter;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.factory.TestFactory;
 import com.expeditors.adoption.service.implementation.AdopterServiceImpl;
+import com.expeditors.adoption.services.BaseServiceUnitTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +18,7 @@ public class AdopterServiceUnitTest
         extends BaseServiceUnitTest<Adopter> {
 
     @Mock
-    private BaseDAO<Adopter> adopterDAO;
+    private BaseDao<Adopter> adopterDAO;
     @InjectMocks
     private AdopterServiceImpl adopterService;
 

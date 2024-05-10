@@ -1,6 +1,6 @@
 package com.expeditors.adoption.dao.inmemory;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.Entity;
 
 import java.util.List;
@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class InMemoryAbstractBaseDAO<TEntity extends Entity>
-        implements BaseDAO<TEntity> {
+public abstract class InMemoryAbstractBaseDao<TEntity extends Entity>
+        implements BaseDao<TEntity> {
 
     private final Map<Integer,TEntity> entities;
     private static int nextId;
@@ -19,7 +19,7 @@ public abstract class InMemoryAbstractBaseDAO<TEntity extends Entity>
         nextId = 0;
     }
 
-    public InMemoryAbstractBaseDAO() {
+    public InMemoryAbstractBaseDao() {
         entities = new ConcurrentHashMap<>();
     }
 

@@ -6,7 +6,7 @@ import com.expeditors.adoption.domain.Entity;
 import java.util.List;
 
 
-public interface BaseDAO<TEntity extends Entity> {
+public interface BaseDao<TEntity extends Entity> {
     List<TEntity> findAll();
     TEntity findById(int id);
     TEntity insert(TEntity tEntity);

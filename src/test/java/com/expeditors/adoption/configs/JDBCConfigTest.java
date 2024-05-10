@@ -11,12 +11,11 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 
 @Configuration
-@Profile(JDBC_TEST)
+@Profile({ JDBC_TEST, JDBC_TEMPLATE_TEST })
 public class JDBCConfigTest {
 
     @Bean("connectionForJDBCTest")
@@ -28,8 +27,6 @@ public class JDBCConfigTest {
                 .setType(H2)
                 .setScriptEncoding("UTF-8")
                 .ignoreFailedDrops(true)
-//                .addScript("/sql/h2/0-schema.sql")
-//                .addScript("/sql/h2/1-test-data.sql")
                 .build();
     }
 

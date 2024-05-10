@@ -1,4 +1,4 @@
-package com.expeditors.adoption.services;
+package com.expeditors.adoption.services.adoption;
 
 import com.expeditors.adoption.factory.TestFactory;
 import com.expeditors.adoption.service.AdoptionService;
