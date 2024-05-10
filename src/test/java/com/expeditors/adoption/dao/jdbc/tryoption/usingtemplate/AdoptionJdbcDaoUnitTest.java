@@ -16,7 +16,7 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;
 @SpringBootTest
 @ActiveProfiles(JDBC_TEST)
 @Sql(scripts = {"/sql/h2/0-schema.sql", "/sql/h2/1-test-data.sql"})
-public class AdoptionJdbcDaoTest {
+public class AdoptionJdbcDaoUnitTest {
 
     @Autowired
     private AdoptionJdbcDao adoptionDao;

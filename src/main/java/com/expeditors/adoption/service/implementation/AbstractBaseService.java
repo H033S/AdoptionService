@@ -1,6 +1,6 @@
 package com.expeditors.adoption.service.implementation;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.Entity;
 import com.expeditors.adoption.service.BaseService;
 
@@ -10,9 +10,9 @@ import java.util.Objects;
 public abstract class AbstractBaseService<TEntity extends Entity>
         implements BaseService<TEntity> {
 
-    protected final BaseDAO<TEntity> entityDAO;
+    protected final BaseDao<TEntity> entityDAO;
 
-    protected AbstractBaseService(BaseDAO<TEntity> entityDAO) {
+    protected AbstractBaseService(BaseDao<TEntity> entityDAO) {
         this.entityDAO = entityDAO;
     }
 

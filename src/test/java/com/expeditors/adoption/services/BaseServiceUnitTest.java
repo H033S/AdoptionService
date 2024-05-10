@@ -1,6 +1,6 @@
 package com.expeditors.adoption.services;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.Entity;
 import com.expeditors.adoption.service.BaseService;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.doReturn;
 
 public abstract class BaseServiceUnitTest<TEntity extends Entity> {
 
-    protected BaseDAO<TEntity> baseDAO;
+    protected BaseDao<TEntity> baseDAO;
     protected BaseService<TEntity> baseService;
     protected TEntity mockEntity;
 

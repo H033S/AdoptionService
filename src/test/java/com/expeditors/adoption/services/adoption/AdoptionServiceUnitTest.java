@@ -1,10 +1,11 @@
-package com.expeditors.adoption.services;
+package com.expeditors.adoption.services.adoption;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
 import com.expeditors.adoption.factory.TestFactory;
 import com.expeditors.adoption.service.implementation.AdoptionServiceImpl;
+import com.expeditors.adoption.services.BaseServiceUnitTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class AdoptionServiceUnitTest
     extends BaseServiceUnitTest<Adoption> {
 
     @Mock
-    private BaseDAO<Adoption> adoptionBaseDAO;
+    private BaseDao<Adoption> adoptionBaseDao;
     @InjectMocks
     private AdoptionServiceImpl adoptionService;
 
@@ -36,7 +37,7 @@ class AdoptionServiceUnitTest
     @Override
     @BeforeEach
     public void init() {
-        baseDAO = adoptionBaseDAO;
+        baseDAO = adoptionBaseDao;
         baseService = adoptionService;
         mockEntity = TestFactory.getAdoptionInstance();
     }

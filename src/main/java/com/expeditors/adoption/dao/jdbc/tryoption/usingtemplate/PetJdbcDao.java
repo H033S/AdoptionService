@@ -1,6 +1,7 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
+import com.expeditors.adoption.dao.jdbc.PetSqlQueries;
 import com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates.*;
 import com.expeditors.adoption.domain.entities.Pet;
 import com.expeditors.adoption.domain.entities.PetBreed;
@@ -19,7 +20,7 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;
 
 @Repository
 @Profile({JDBC, JDBC_TEST})
-public class PetJdbcDao implements BaseDAO<Pet> {
+public class PetJdbcDao implements BaseDao<Pet> {
 
     private final DataSource dataSource;
 
@@ -29,10 +30,6 @@ public class PetJdbcDao implements BaseDAO<Pet> {
 
     @Override
     public List<Pet> findAll() {
-
-        String sql = """
-        SELECT ID, NAME, BREED, TYPE FROM PET
-        """;
 
         JdbcListTemplate<Pet> template = new JdbcListTemplate<>(dataSource) {
             @Override
@@ -46,16 +43,11 @@ public class PetJdbcDao implements BaseDAO<Pet> {
             }
         };
 
-        return template.findAll(sql);
+        return template.findAll(PetSqlQueries.getFindAllQuery());
     }
 
     @Override
     public Pet findById(int id) {
-
-        String sql = """
-        SELECT ID, NAME, BREED, TYPE FROM PET
-        WHERE ID = ?
-        """;
 
         JdbcFindByIdTemplate<Pet> template = new JdbcFindByIdTemplate<>(dataSource) {
             @Override
@@ -69,16 +61,11 @@ public class PetJdbcDao implements BaseDAO<Pet> {
             }
         };
 
-        return template.findById(id, sql);
+        return template.findById(id, PetSqlQueries.getFindByIdQuery());
     }
 
     @Override
     public Pet insert(Pet pet) {
-
-        String sql = """
-        INSERT INTO PET (NAME, BREED, TYPE)
-        VALUES (?,  ?, ?)
-        """;
 
         JdbcInsertTemplate<Pet> template = new JdbcInsertTemplate<>(dataSource) {
             @Override
@@ -89,19 +76,11 @@ public class PetJdbcDao implements BaseDAO<Pet> {
             }
         };
 
-        return template.insert(pet, sql);
+        return template.insert(pet, PetSqlQueries.getInsertQuery());
     }
 
     @Override
     public boolean update(Pet pet) {
-
-        String sql = """
-                UPDATE PET SET
-                    NAME = ?,
-                    BREED = ?,
-                    TYPE = ?
-                WHERE ID = ?
-                """;
 
         JdbcUpdateTemplate<Pet> template = new JdbcUpdateTemplate<>(dataSource) {
             @Override
@@ -113,16 +92,13 @@ public class PetJdbcDao implements BaseDAO<Pet> {
             }
         };
 
-        return template.update(pet, sql);
+        return template.update(pet, PetSqlQueries.getUpdateQuery());
     }
 
     @Override
     public boolean delete(int id) {
-        String sql = """
-                DELETE FROM PET
-                WHERE ID = ?
-                """;
+
         JdbcDeleteTemplate template = new JdbcDeleteTemplate(dataSource) {};
-        return template.delete(id, sql);
+        return template.delete(id, PetSqlQueries.getDeleteQuery());
     }
 }

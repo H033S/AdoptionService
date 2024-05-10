@@ -1,6 +1,6 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.withoutusingtemplate;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.entities.Adopter;
 
 import javax.sql.DataSource;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdopterJdbcDaoWithoutTemplate
-        implements BaseDAO<Adopter> {
+        implements BaseDao<Adopter> {
 
     private final DataSource source;
 

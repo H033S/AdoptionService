@@ -1,8 +1,9 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates.*;
 import com.expeditors.adoption.domain.entities.Adopter;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -12,13 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @Repository
 @Profile({JDBC, JDBC_TEST})
 public class AdopterJdbcDao
-        implements BaseDAO<Adopter> {
+        implements BaseDao<Adopter> {
 
     private final DataSource datasource;
 

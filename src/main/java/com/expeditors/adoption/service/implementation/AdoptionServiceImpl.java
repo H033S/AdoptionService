@@ -1,7 +1,7 @@
 
 package com.expeditors.adoption.service.implementation;
 
-import com.expeditors.adoption.dao.BaseDAO;
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
 import com.expeditors.adoption.service.AdoptionService;
@@ -18,7 +18,7 @@ public class AdoptionServiceImpl
         implements AdoptionService  {
 
     @Autowired
-    public AdoptionServiceImpl(BaseDAO<Adoption> adoptionDAO) {
+    public AdoptionServiceImpl(BaseDao<Adoption> adoptionDAO) {
         super(adoptionDAO);
     }
 
