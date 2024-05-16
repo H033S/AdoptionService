@@ -1,14 +1,14 @@
 package com.expeditors.adoption.dao.inmemory;
 
 import com.expeditors.adoption.dao.BaseDao;
-import com.expeditors.adoption.domain.Entity;
+import com.expeditors.adoption.domain.AbstractEntity;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class InMemoryAbstractBaseDao<TEntity extends Entity>
+public abstract class InMemoryAbstractBaseDao<TEntity extends AbstractEntity>
         implements BaseDao<TEntity> {
 
     private final Map<Integer,TEntity> entities;

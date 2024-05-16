@@ -1,0 +1,14 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence">
+
+    <persistence-unit name="adoption-app-pu">
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/adopt_app"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="password"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+
+            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
+        </properties>
+    </persistence-unit>
+</persistence>

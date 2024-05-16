@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+
 @ExtendWith(MockitoExtension.class)
 public class AdopterServiceUnitTest
         extends BaseServiceUnitTest<Adopter> {

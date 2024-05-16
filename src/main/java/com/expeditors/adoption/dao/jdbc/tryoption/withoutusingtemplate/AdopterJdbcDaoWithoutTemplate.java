@@ -2,6 +2,7 @@ package com.expeditors.adoption.dao.jdbc.tryoption.withoutusingtemplate;
 
 import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.entities.Adopter;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -40,7 +41,7 @@ public class AdopterJdbcDaoWithoutTemplate
 
             try(ResultSet rSet = pStmt.getGeneratedKeys()){
                 rSet.next();
-                adopter.setId(rSet.getInt(rSet.getInt(1)));
+                adopter.setId(rSet.getInt(1));
             }
 
         } catch (SQLException e) {

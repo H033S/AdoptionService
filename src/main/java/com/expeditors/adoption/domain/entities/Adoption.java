@@ -1,6 +1,6 @@
 package com.expeditors.adoption.domain.entities;
 
-import com.expeditors.adoption.domain.Entity;
+import com.expeditors.adoption.domain.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-public class Adoption extends Entity{
+public class Adoption extends AbstractEntity {
 
     @NotNull(message = "{validation.adoption.adopter.null}")
     private Adopter adopter;

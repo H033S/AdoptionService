@@ -6,29 +6,37 @@ import java.util.stream.Collectors;
 
 import com.expeditors.adoption.domain.violations.ConstraintError;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
 
 import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 
-@Setter
-@Getter
-public abstract class Entity implements EntityValidable<Entity> {
+@MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class AbstractEntity implements EntityValidable<AbstractEntity> {
 
-    protected static Validator validator;
-    
     @NotNull
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
+
+    @Transient
+    protected static Validator validator;
 
     static {
         validator = buildDefaultValidatorFactory().getValidator();
     }
 
-    public Entity(int id) {
+
+    public AbstractEntity() {
+
+    }
+
+    public AbstractEntity(int id) {
         this.id = id;
     }
+
+
 
     @JsonIgnore
     public Set<ConstraintError> getModelViolations(){
@@ -47,5 +55,14 @@ public abstract class Entity implements EntityValidable<Entity> {
     public boolean isModelValid(){
         var modelViolationsFound = getModelViolations().size();
         return modelViolationsFound == 0;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

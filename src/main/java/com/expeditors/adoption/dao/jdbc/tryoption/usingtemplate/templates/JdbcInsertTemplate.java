@@ -1,11 +1,11 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates;
 
-import com.expeditors.adoption.domain.Entity;
+import com.expeditors.adoption.domain.AbstractEntity;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
-public abstract class JdbcInsertTemplate<TEntity extends Entity>
+public abstract class JdbcInsertTemplate<TEntity extends AbstractEntity>
         extends JdbcAbstractBaseTemplate{
 
     public JdbcInsertTemplate(DataSource source) {

@@ -1,5 +1,6 @@
 package com.expeditors.adoption.controllers;
 
+import com.expeditors.adoption.dao.utils.profiles.Profiles;
 import com.expeditors.adoption.domain.entities.Adopter;
 import com.expeditors.adoption.domain.entities.Adoption;
 import com.expeditors.adoption.domain.entities.Pet;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -28,9 +30,18 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ActiveProfiles(profiles = Profiles.JDBC_TEST)
+class AdoptionControllerUnitTestJDBC extends AdoptionControllerUnitTest{
+}
+
+@ActiveProfiles(profiles = Profiles.JDBC_TEMPLATE_TEST)
+class AdoptionControllerUnitTestJDBC_TEMPLATE extends AdoptionControllerUnitTest{
+}
+
+
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AdoptionControllerUnitTest {
+public abstract class AdoptionControllerUnitTest {
     
     @MockBean
     private AdoptionServiceImpl adoptionService;

@@ -1,10 +1,10 @@
 package com.expeditors.adoption.service;
 
-import com.expeditors.adoption.domain.Entity;
+import com.expeditors.adoption.domain.AbstractEntity;
 
 import java.util.List;
 
-public interface BaseService<TEntity extends Entity> {
+public interface BaseService<TEntity extends AbstractEntity> {
     List<TEntity> getAllEntities();
 
     TEntity addEntity(TEntity tEntity);
