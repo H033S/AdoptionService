@@ -1,6 +1,7 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate;
 
 import com.expeditors.adoption.dao.BaseDao;
+import com.expeditors.adoption.dao.jdbc.AdopterSqlQueries;
 import com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates.*;
 import com.expeditors.adoption.domain.entities.Adopter;
 import org.springframework.context.annotation.Primary;
@@ -29,10 +30,6 @@ public class AdopterJdbcDao
     @Override
     public List<Adopter> findAll() {
 
-        String sql = """
-        SELECT ID, NAME, PHONE_NUMBER FROM ADOPTER
-        """;
-
         JdbcListTemplate<Adopter> template = new JdbcListTemplate<>(datasource) {
             @Override
             public Adopter mapItem(ResultSet rSet) throws SQLException {
@@ -44,16 +41,11 @@ public class AdopterJdbcDao
             }
         };
 
-        return template.findAll(sql);
+        return template.findAll(AdopterSqlQueries.getFindAllQuery());
     }
 
     @Override
     public Adopter findById(int id) {
-
-        String sql = """
-        SELECT ID, NAME, PHONE_NUMBER FROM ADOPTER
-        WHERE ID = ?
-        """;
 
         JdbcFindByIdTemplate<Adopter> template = new JdbcFindByIdTemplate<>(datasource) {
             @Override
@@ -66,16 +58,12 @@ public class AdopterJdbcDao
             }
         };
 
-        return template.findById(id, sql);
+        return template.findById(id, AdopterSqlQueries.getFindByIdQuery());
     }
 
     @Override
     public Adopter insert(Adopter adopter) {
 
-        String sql = """
-        INSERT INTO ADOPTER (NAME, PHONE_NUMBER)
-        VALUES (?, ?)
-        """;
 
         JdbcInsertTemplate<Adopter> template = new JdbcInsertTemplate<>(datasource) {
             @Override
@@ -87,7 +75,7 @@ public class AdopterJdbcDao
                 pStmt.setString(2, adopterToInsert.getPhoneNumber());
             }
         };
-        return template.insert(adopter, sql);
+        return template.insert(adopter, AdopterSqlQueries.getInsertQuery());
     }
 
     @Override

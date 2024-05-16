@@ -1,6 +1,6 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates;
 
-import com.expeditors.adoption.domain.Entity;
+import com.expeditors.adoption.domain.AbstractEntity;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class JdbcListTemplate<TEntity extends Entity>
+public abstract class JdbcListTemplate<TEntity extends AbstractEntity>
         extends JdbcAbstractBaseTemplate {
 
     public JdbcListTemplate(DataSource source) {

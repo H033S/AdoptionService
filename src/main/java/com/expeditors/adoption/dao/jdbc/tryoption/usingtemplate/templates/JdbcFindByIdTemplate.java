@@ -1,6 +1,6 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates;
 
-import com.expeditors.adoption.domain.Entity;
+import com.expeditors.adoption.domain.AbstractEntity;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class JdbcFindByIdTemplate<TEntity extends Entity>
+public abstract class JdbcFindByIdTemplate<TEntity extends AbstractEntity>
         extends JdbcAbstractBaseTemplate  {
     public JdbcFindByIdTemplate(DataSource source) {
         super(source);

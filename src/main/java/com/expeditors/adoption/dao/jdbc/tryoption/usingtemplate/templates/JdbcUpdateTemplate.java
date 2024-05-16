@@ -1,13 +1,13 @@
 package com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates;
 
-import com.expeditors.adoption.domain.Entity;
+import com.expeditors.adoption.domain.AbstractEntity;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public abstract class JdbcUpdateTemplate<TEntity extends Entity>
+public abstract class JdbcUpdateTemplate<TEntity extends AbstractEntity>
         extends JdbcAbstractBaseTemplate{
 
     public JdbcUpdateTemplate(DataSource source) {
