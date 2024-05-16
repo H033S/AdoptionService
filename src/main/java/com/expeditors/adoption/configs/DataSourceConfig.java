@@ -12,11 +12,11 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC;
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEMPLATE;
 
 @Configuration
-@Profile({JDBC, JDBC_TEMPLATE})
-public class JdbcConfiguration {
+//@Profile({JDBC, JDBC_TEMPLATE})
+public class DataSourceConfig {
 
-    @Bean("connectionForJDBC")
-    public DataSource getConnection(
+    @Bean
+    public DataSource dataSouce(
             @Value(value = "${expeditors.db.connection}") String dbUrl,
             @Value(value = "${expeditors.db.username}") String dbUser,
             @Value(value = "${expeditors.db.password}") String dbPassword) {
