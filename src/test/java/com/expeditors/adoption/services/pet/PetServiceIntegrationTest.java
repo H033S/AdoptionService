@@ -14,10 +14,12 @@ import java.time.LocalDate;
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @ActiveProfiles({JDBC_TEST})
-class PetServiceIntegrationTestJDBCProfileTest extends PetServiceIntegrationTest{}
-
+class PetServiceIntegrationTest__JDBC_TEST extends PetServiceIntegrationTest{}
 @ActiveProfiles({JDBC_TEMPLATE_TEST})
-class PetServiceIntegrationTestJDBCTemplateProfileTest extends PetServiceIntegrationTest{}
+class PetServiceIntegrationTest__JDBC_TEMPLATE_TEST extends PetServiceIntegrationTest{}
+@ActiveProfiles({JPA_TEST})
+class PetServiceIntegrationTest__JPA_TEST extends PetServiceIntegrationTest{}
+
 
 @SpringBootTest
 @Sql(scripts = {"/sql/h2/0-schema.sql", "/sql/h2/1-test-data.sql"})

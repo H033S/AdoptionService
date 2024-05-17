@@ -5,14 +5,19 @@ import com.expeditors.adoption.domain.annottations.PhoneNumber;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Adopter extends AbstractEntity {
-    
+
     @Size(min = 2, message = "{validation.adopter.name.size.too_short}")
     @Size(max = 200, message = "{validation.adopter.name.size.too_long}")
     @Column(
-            name = "adopter_name",
+            name = "name",
             nullable = false
     )
     private String adopterName;
@@ -24,44 +29,10 @@ public class Adopter extends AbstractEntity {
     )
     private String phoneNumber;
 
-
-    public Adopter(
-        int id,
-        String adopterName, 
-        String phoneNumber) {
-        
-            super(id);
-            this.adopterName = adopterName;
-            this.phoneNumber = phoneNumber;
-    }
-
-    public Adopter() {
-
-    }
-
-
-    public String getAdopterName() {
-        return adopterName;
-    }
-
-    public void setAdopterName(String adopterName) {
+    public Adopter(int id, String adopterName, String phoneNumber) {
+        this.id = id;
         this.adopterName = adopterName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    @Override
-    public String toString() {
-        return "Adopter{" +
-                "id=" + id +
-                ", adopterName='" + adopterName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
 }
+

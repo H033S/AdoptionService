@@ -15,8 +15,8 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 
 @Configuration
-@Profile({ JDBC_TEST, JDBC_TEMPLATE_TEST })
-public class JDBCConfigTest {
+@Profile({ JDBC_TEST, JDBC_TEMPLATE_TEST, JPA_TEST })
+public class DataSourceConfigTest {
 
     @Bean("connectionForJDBCTest")
     @Primary

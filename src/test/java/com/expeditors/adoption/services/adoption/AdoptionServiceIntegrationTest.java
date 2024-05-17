@@ -11,12 +11,18 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
+
+@ActiveProfiles(JDBC_TEST)
+class AdoptionServiceIntegrationTest__JDBC extends AdoptionServiceIntegrationTest{}
+@ActiveProfiles(JDBC_TEMPLATE_TEST)
+class AdoptionServiceIntegrationTest__JDBC_TEMPLATE extends AdoptionServiceIntegrationTest{}
+@ActiveProfiles(JPA_TEST)
+class AdoptionServiceIntegrationTest__JPA extends AdoptionServiceIntegrationTest{}
 
 @SpringBootTest
-@ActiveProfiles(JDBC_TEST)
 @Sql(scripts = {"/sql/h2/0-schema.sql", "/sql/h2/1-test-data.sql"})
-public class AdoptionServiceIntegrationTest {
+public abstract class AdoptionServiceIntegrationTest {
 
     @Autowired
     AdoptionService adoptionService;
@@ -44,7 +50,8 @@ public class AdoptionServiceIntegrationTest {
 
     @Test
     void addEntity_RunSuccessfully_WhenCorrectAdoption(){
-
+        var elem = adoptionService.getAllEntities();
+        elem.forEach(x -> System.out.println("ID: " + x.getId() + " " + x));
         var adoption = TestFactory.getAdoptionInstance();
         var adoptionResult = adoptionService.addEntity(adoption);
 

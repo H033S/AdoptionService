@@ -1,17 +1,30 @@
 package com.expeditors.adoption.controllers;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.ActiveProfiles;
+
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
+
+@ActiveProfiles(JDBC_TEST)
+class AdoptionControllerIntegrationTest__JDBC extends AdoptionControllerIntegrationTest{}
+@ActiveProfiles(JDBC_TEMPLATE_TEST)
+class AdoptionControllerIntegrationTest__JDBC_TEMPLATE extends AdoptionControllerIntegrationTest{}
+@ActiveProfiles(JPA_TEST)
+class AdoptionControllerIntegrationTest__JPA extends AdoptionControllerIntegrationTest{}
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AdoptionControllerIntegrationTest {
+public abstract class AdoptionControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Test
+    void test(){}
 //    @Test
 //    @DisplayName("POST /adoption - Success")
 //    public void addAdoption_ReturnsOk_WithValidObject() throws Exception {

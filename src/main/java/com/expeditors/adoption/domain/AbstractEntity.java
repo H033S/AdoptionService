@@ -9,15 +9,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractEntity implements EntityValidable<AbstractEntity> {
 
     @NotNull
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter @Setter
     protected int id;
 
     @Transient
@@ -36,8 +38,6 @@ public abstract class AbstractEntity implements EntityValidable<AbstractEntity> 
         this.id = id;
     }
 
-
-
     @JsonIgnore
     public Set<ConstraintError> getModelViolations(){
 
@@ -55,14 +55,5 @@ public abstract class AbstractEntity implements EntityValidable<AbstractEntity> 
     public boolean isModelValid(){
         var modelViolationsFound = getModelViolations().size();
         return modelViolationsFound == 0;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

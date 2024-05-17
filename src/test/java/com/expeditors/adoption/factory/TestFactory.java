@@ -11,7 +11,7 @@ public class TestFactory {
                 1,
                 getAdopterInstance(),
                 getPetInstance(),
-                LocalDate.now());
+                LocalDate.now().plusDays(2));
     }
 
     public static Adopter getAdopterInstance(){

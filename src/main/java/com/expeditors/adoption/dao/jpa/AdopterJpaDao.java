@@ -1,8 +1,9 @@
 package com.expeditors.adoption.dao.jpa;
 
+import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.domain.entities.Adopter;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -10,14 +11,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA_TEST;
 
 @Repository
-@Profile({JPA})
-public class AdopterJpaDao extends AbstractBaseJpaDao<Adopter>  {
+@Profile({JPA, JPA_TEST})
+public class AdopterJpaDao implements BaseDao<Adopter> {
 
-    public AdopterJpaDao(EntityManager em, EntityTransaction tx) {
-        super(em, tx);
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<Adopter> findAll() {
@@ -27,21 +28,29 @@ public class AdopterJpaDao extends AbstractBaseJpaDao<Adopter>  {
 
     @Override
     public Adopter findById(int id) {
-        return null;
+        return em.find(Adopter.class, id);
     }
 
     @Override
     public Adopter insert(Adopter adopter) {
-        return null;
+        em.persist(adopter);
+        return adopter;
     }
 
     @Override
     public boolean update(Adopter adopter) {
-        return false;
+        em.merge(adopter);
+        return true;
     }
 
     @Override
-    public boolean delete(int i) {
-        return false;
+    public boolean delete(int id) {
+        Adopter adopter = findById(id);
+
+        if(adopter == null){
+            return false;
+        }
+        em.remove(adopter);
+        return true;
     }
 }

@@ -1,6 +1,7 @@
-package com.expeditors.adoption.dao.jpa;
+package com.expeditors.adoption.dao.jpa.adapters;
 
 import com.expeditors.adoption.dao.BaseDao;
+import com.expeditors.adoption.dao.jpa.AdoptionJpaDao;
 import com.expeditors.adoption.domain.entities.Adoption;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -10,39 +11,44 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA_TEST;
 
 @Repository
-@Profile({JPA})
+@Profile({JPA, JPA_TEST})
 public class AdoptionJpaDaoAdapter implements BaseDao<Adoption> {
 
-    private final AdopterJpaDao adopterDao;
+    private final AdoptionJpaDao repo;
 
-    public AdoptionJpaDaoAdapter(AdopterJpaDao adopterDao) {
-        this.adopterDao = adopterDao;
+    public AdoptionJpaDaoAdapter(AdoptionJpaDao repo) {
+        this.repo = repo;
     }
 
     @Override
     public List<Adoption> findAll() {
-        return null;
+        return repo.findAll();
     }
 
     @Override
     public Adoption findById(int id) {
-        return null;
+        return repo
+                .findById(id)
+                .orElse(null);
     }
 
     @Override
     public Adoption insert(Adoption adoption) {
-        return null;
+        return repo.save(adoption);
     }
 
     @Override
     public boolean update(Adoption adoption) {
-        return false;
+        repo.save(adoption);
+        return true;
     }
 
     @Override
-    public boolean delete(int i) {
-        return false;
+    public boolean delete(int id) {
+        repo.deleteById(id);
+        return true;
     }
 }

@@ -11,10 +11,17 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
+@ActiveProfiles(JDBC_TEST)
+class AdopterServiceIntegrationTest_JDBC_TEST extends AdopterServiceIntegrationTest{}
+@ActiveProfiles(JDBC_TEMPLATE_TEST)
+class AdopterServiceIntegrationTest_JDBC_TEMPLATE_TEST extends AdopterServiceIntegrationTest{}
+@ActiveProfiles(JPA_TEST)
+class AdopterServiceIntegrationTest_JPA_TEST extends AdopterServiceIntegrationTest{}
+
+
 @SpringBootTest
-@ActiveProfiles(JPA)
 @Sql(scripts = {"/sql/h2/0-schema.sql", "/sql/h2/1-test-data.sql"})
-public class AdopterServiceIntegrationTest {
+public abstract class AdopterServiceIntegrationTest {
 
     @Autowired
     AdopterService adopterService;

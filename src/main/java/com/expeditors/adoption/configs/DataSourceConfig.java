@@ -8,12 +8,11 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEMPLATE;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @Configuration
-//@Profile({JDBC, JDBC_TEMPLATE})
-public class JdbcConfiguration {
+@Profile({JDBC, JDBC_TEMPLATE, JPA})
+public class DataSourceConfig {
 
     @Bean
     public DataSource getConnection(

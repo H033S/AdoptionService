@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.expeditors.adoption.domain.violations.ConstraintError;
 
-public interface EntityValidable <T extends AbstractEntity> {
+public interface EntityValidable <T> {
 
     Set<ConstraintError> getModelViolations();
     boolean isModelValid();

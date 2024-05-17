@@ -30,18 +30,9 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ActiveProfiles(profiles = Profiles.JDBC_TEST)
-class AdoptionControllerUnitTestJDBC extends AdoptionControllerUnitTest{
-}
-
-@ActiveProfiles(profiles = Profiles.JDBC_TEMPLATE_TEST)
-class AdoptionControllerUnitTestJDBC_TEMPLATE extends AdoptionControllerUnitTest{
-}
-
-
 @SpringBootTest
 @AutoConfigureMockMvc
-public abstract class AdoptionControllerUnitTest {
+public class AdoptionControllerUnitTest {
     
     @MockBean
     private AdoptionServiceImpl adoptionService;

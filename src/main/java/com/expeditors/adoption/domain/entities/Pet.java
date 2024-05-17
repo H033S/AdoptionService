@@ -7,13 +7,18 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Pet extends AbstractEntity {
 
     @NotNull(message = "{validation.petBreed.null}")
     @Column(
-            name = "pet_breed",
+            name = "breed",
             nullable = false
     )
     @Enumerated(value = EnumType.STRING)
@@ -21,7 +26,7 @@ public class Pet extends AbstractEntity {
 
     @NotNull(message = "{validation.petType.null}")
     @Column(
-            name = "pet_type",
+            name = "type",
             nullable = false
     )
     @Enumerated(value = EnumType.STRING)
@@ -30,59 +35,15 @@ public class Pet extends AbstractEntity {
     @Size(min = 2, message = "{validation.name.size.too_short}")
     @Size(max = 200, message = "{validation.name.size.too_long}")
     @Column(
-            name = "pet_name",
+            name = "name",
             nullable = false
     )
     private String petName;
 
-
-    public Pet() {
-    }
-
-    public Pet(
-            int id,
-            PetBreed petBreed,
-            PetType petType,
-            String petName) {
-
-        super(id);
-        this.petBreed = petBreed;
-        this.petType = petType;
-        this.petName = petName;
-    }
-
-
-
-    public PetBreed getPetBreed() {
-        return petBreed;
-    }
-
-    public void setPetBreed(PetBreed petBreed) {
-        this.petBreed = petBreed;
-    }
-
-    public PetType getPetType() {
-        return petType;
-    }
-
-    public void setPetType(PetType petType) {
-        this.petType = petType;
-    }
-
-    public String getPetName() {
-        return petName;
-    }
-
-    public void setPetName(String petName) {
-        this.petName = petName;
-    }
-
-    @Override
-    public String toString() {
-        return "Pet{" + " id=" + id +
-                ", petBreed=" + petBreed +
-                ", petType=" + petType +
-                ", petName='" + petName + '\'' +
-                '}';
+    public Pet(int id, PetBreed breed, PetType type, String name) {
+        this.id = id;
+        this.petBreed = breed;
+        this.petType = type;
+        this.petName = name;
     }
 }
