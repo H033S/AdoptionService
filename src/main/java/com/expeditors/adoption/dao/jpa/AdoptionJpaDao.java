@@ -13,8 +13,10 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
 @Repository
 @Profile({JPA})
 public class AdoptionJpaDao extends AbstractBaseJpaDao<Adoption>{
-    public AdoptionJpaDao(EntityManager em, EntityTransaction tx) {
-        super(em, tx);
+
+    //public AdoptionJpaDao(EntityManager em, EntityTransaction tx) {
+    public AdoptionJpaDao(EntityManager em) {
+        super(em, null);  //dummy for now
     }
 
     @Override

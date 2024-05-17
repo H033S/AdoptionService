@@ -13,8 +13,10 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
 @Repository
 @Profile({JPA})
 public class PetJpaDao extends AbstractBaseJpaDao<Pet>{
-    public PetJpaDao(EntityManager em, EntityTransaction tx) {
-        super(em, tx);
+
+    //public PetJpaDao(EntityManager em, EntityTransaction tx) {
+    public PetJpaDao(EntityManager em) {
+        super(em, null);
     }
 
     @Override
