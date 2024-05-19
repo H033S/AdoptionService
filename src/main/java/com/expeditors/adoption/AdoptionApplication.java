@@ -45,31 +45,31 @@ class  RunApp implements CommandLineRunner{
 
 	@Override
 	public void run(String... args)   {
-//		 var adopter1 = new Adopter(0, "Antonio Nazco", "123-123-4567");
-//		 var adopter2 = new Adopter(0, "Nathaly Nazco", "123-123-4567");
-//
-//		 var pet1 = new Pet(0, PetBreed.POODLE, PetType.DOG,  "Suki" );
-//		 var pet2 = new Pet(0, PetBreed.SIAMESE, PetType.CAT,  "Bing" );
-//		 var pet3 = new Pet(0, PetBreed.SIAMESE, PetType.CAT,  "Bang" );
-//
-//		 var ld1 = LocalDate.now().minusDays(3);
-//		 var ld2 = LocalDate.now().minusDays(4);
-//		 var ld3 = LocalDate.now().minusDays(5);
-//
-//		 var adoption1 = new Adoption(0, adopter1, pet1, ld1);
-//		 var adoption2 = new Adoption(0, adopter2, pet2, ld2);
-//		 var adoption3 = new Adoption(0, adopter2, pet3, ld3);
-//
-//		 petService.addEntity(pet1);
-//		 petService.addEntity(pet2);
-//		 petService.addEntity(pet3);
-//
-//		 adopterService.addEntity(adopter1);
-//		 adopterService.addEntity(adopter2);
-//
-//		 adoptionService.addEntity( adoption1);
-//		 adoptionService.addEntity( adoption2);
-//		 adoptionService.addEntity( adoption3);
+		 var adopter1 = new Adopter(0, "Antonio Nazco", "123-123-4567");
+		 var adopter2 = new Adopter(0, "Nathaly Nazco", "123-123-4567");
+
+		 var pet1 = new Pet(0, PetBreed.POODLE, PetType.DOG,  "Suki" );
+		 var pet2 = new Pet(0, PetBreed.SIAMESE, PetType.CAT,  "Bing" );
+		 var pet3 = new Pet(0, PetBreed.SIAMESE, PetType.CAT,  "Bang" );
+
+		 var ld1 = LocalDate.now().plusDays(3);
+		 var ld2 = LocalDate.now().plusDays(4);
+		 var ld3 = LocalDate.now().plusDays(5);
+
+		 var adoption1 = new Adoption(0, adopter1, pet1, ld1);
+		 var adoption2 = new Adoption(0, adopter2, pet2, ld2);
+		 var adoption3 = new Adoption(0, adopter2, pet3, ld3);
+
+		 petService.addEntity(pet1);
+		 petService.addEntity(pet2);
+		 petService.addEntity(pet3);
+
+		 adopterService.addEntity(adopter1);
+		 adopterService.addEntity(adopter2);
+
+		 adoptionService.addEntity( adoption1);
+		 adoptionService.addEntity( adoption2);
+		 adoptionService.addEntity( adoption3);
 
 		 System.out.println(adoptionService.getClass().getSimpleName());
 		 var adoptions  = adoptionService.getAllEntities();

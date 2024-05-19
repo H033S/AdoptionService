@@ -108,7 +108,7 @@ public class AdopterJdbcDaoTemplate
     }
 
     @Override
-    public boolean delete(int i) {
+    public boolean delete(int id) {
         return false;
     }
 }

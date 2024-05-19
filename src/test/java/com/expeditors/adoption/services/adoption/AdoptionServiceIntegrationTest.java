@@ -50,10 +50,13 @@ public abstract class AdoptionServiceIntegrationTest {
 
     @Test
     void addEntity_RunSuccessfully_WhenCorrectAdoption(){
+
+        var adoption = TestFactory.getAdoptionInstance();
+        adoption.setId(0);
+        var adoptionResult = adoptionService.addEntity(adoption);
+
         var elem = adoptionService.getAllEntities();
         elem.forEach(x -> System.out.println("ID: " + x.getId() + " " + x));
-        var adoption = TestFactory.getAdoptionInstance();
-        var adoptionResult = adoptionService.addEntity(adoption);
 
         Assertions.assertEquals(4, adoptionResult.getId());
     }

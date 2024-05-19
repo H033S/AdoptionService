@@ -11,5 +11,5 @@ public interface BaseDao<TEntity extends AbstractEntity> {
     TEntity findById(int id);
     TEntity insert(TEntity tEntity);
     boolean update(TEntity tEntity);
-    boolean delete(int i);
+    boolean delete(int id);
 }

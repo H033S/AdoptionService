@@ -18,7 +18,7 @@ import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 public abstract class AbstractEntity implements EntityValidable<AbstractEntity> {
 
     @NotNull
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter
     protected int id;
 

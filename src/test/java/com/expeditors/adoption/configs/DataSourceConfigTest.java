@@ -19,7 +19,6 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 public class DataSourceConfigTest {
 
     @Bean("connectionForJDBCTest")
-    @Primary
     public DataSource getConnectionTest() {
 
         return new EmbeddedDatabaseBuilder()

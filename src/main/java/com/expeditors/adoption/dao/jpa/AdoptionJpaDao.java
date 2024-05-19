@@ -3,12 +3,24 @@ package com.expeditors.adoption.dao.jpa;
 import com.expeditors.adoption.domain.entities.Adoption;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA_TEST;
 
 @Repository
 @Profile({JPA, JPA_TEST})
-public interface AdoptionJpaDao extends JpaRepository<Adoption, Integer> {}
+public interface AdoptionJpaDao extends JpaRepository<Adoption, Integer> {
+
+    @Query("SELECT a FROM Adoption a JOIN FETCH a.adopter JOIN FETCH a.pet")
+    List<Adoption> findAllAdoptionWithAdopterAndPet();
+
+    @Query("SELECT a FROM Adoption a JOIN FETCH a.adopter JOIN FETCH a.pet WHERE a.id = :id")
+    Optional<Adoption> findById(int id);
+
+}
 

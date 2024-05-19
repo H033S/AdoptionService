@@ -25,7 +25,7 @@ public class AdoptionJpaDaoAdapter implements BaseDao<Adoption> {
 
     @Override
     public List<Adoption> findAll() {
-        return repo.findAll();
+        return repo.findAllAdoptionWithAdopterAndPet();
     }
 
     @Override
@@ -42,12 +42,20 @@ public class AdoptionJpaDaoAdapter implements BaseDao<Adoption> {
 
     @Override
     public boolean update(Adoption adoption) {
+
+        if(!repo.existsById(adoption.getId())){
+            return false;
+        }
         repo.save(adoption);
         return true;
     }
 
     @Override
     public boolean delete(int id) {
+
+        if(!repo.existsById(id)){
+            return false;
+        }
         repo.deleteById(id);
         return true;
     }

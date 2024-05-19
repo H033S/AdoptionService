@@ -140,7 +140,7 @@ public class AdopterJdbcDaoWithoutTemplate
     }
 
     @Override
-    public boolean delete(int i) {
+    public boolean delete(int id) {
 
         String sql = """
         DELETE FROM ADOPTAPP.PUBLIC.ADOPTER WHERE ID = ?

@@ -35,7 +35,7 @@ public class AdoptionJdbcDaoTemplate
     }
 
     @Override
-    public boolean delete(int i) {
+    public boolean delete(int id) {
         return false;
     }
 }

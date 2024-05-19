@@ -5,6 +5,7 @@ import com.expeditors.adoption.domain.entities.Adopter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA_TEST;
 
 @Repository
+@Transactional
 @Profile({JPA, JPA_TEST})
 public class AdopterJpaDao implements BaseDao<Adopter> {
 
