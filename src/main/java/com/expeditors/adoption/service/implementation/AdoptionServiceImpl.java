@@ -20,6 +20,8 @@ public class AdoptionServiceImpl
     @Autowired
     public AdoptionServiceImpl(BaseDao<Adoption> adoptionDAO) {
         super(adoptionDAO);
+        System.out.println(adoptionDAO.getClass().getSimpleName());
+
     }
 
     @Override

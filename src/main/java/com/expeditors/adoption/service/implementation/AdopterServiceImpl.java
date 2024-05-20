@@ -12,6 +12,7 @@ public class AdopterServiceImpl
 
     public AdopterServiceImpl(BaseDao<Adopter> adopterDAO) {
         super(adopterDAO);
+        System.out.println(adopterDAO.getClass().getSimpleName());
     }
 
 }

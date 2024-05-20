@@ -12,6 +12,7 @@ public class PetServiceImpl
 
     public PetServiceImpl(BaseDao<Pet> petDAO) {
         super(petDAO);
+        System.out.println(petDAO.getClass().getSimpleName());
     }
 
 }
