@@ -9,11 +9,11 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
-@ActiveProfiles(JDBC_TEST)
+@ActiveProfiles({JDBC, H2})
 class AdoptionControllerIntegrationTest__JDBC extends AdoptionControllerIntegrationTest{}
-@ActiveProfiles(JDBC_TEMPLATE_TEST)
+@ActiveProfiles({JDBC_TEMPLATE, H2})
 class AdoptionControllerIntegrationTest__JDBC_TEMPLATE extends AdoptionControllerIntegrationTest{}
-@ActiveProfiles(JPA_TEST)
+@ActiveProfiles({JPA, H2})
 class AdoptionControllerIntegrationTest__JPA extends AdoptionControllerIntegrationTest{}
 
 @AutoConfigureMockMvc

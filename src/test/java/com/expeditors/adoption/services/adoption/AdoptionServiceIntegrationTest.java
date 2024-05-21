@@ -13,11 +13,11 @@ import java.time.LocalDate;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
-@ActiveProfiles(JDBC_TEST)
+@ActiveProfiles({JDBC, H2})
 class AdoptionServiceIntegrationTest__JDBC extends AdoptionServiceIntegrationTest{}
-@ActiveProfiles(JDBC_TEMPLATE_TEST)
+@ActiveProfiles({JDBC_TEMPLATE, H2})
 class AdoptionServiceIntegrationTest__JDBC_TEMPLATE extends AdoptionServiceIntegrationTest{}
-@ActiveProfiles(JPA_TEST)
+@ActiveProfiles({JPA, H2})
 class AdoptionServiceIntegrationTest__JPA extends AdoptionServiceIntegrationTest{}
 
 @SpringBootTest

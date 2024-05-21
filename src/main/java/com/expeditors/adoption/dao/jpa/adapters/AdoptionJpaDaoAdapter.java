@@ -11,10 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA_TEST;
 
 @Repository
-@Profile({JPA, JPA_TEST})
+@Profile({JPA})
 public class AdoptionJpaDaoAdapter implements BaseDao<Adoption> {
 
     private final AdoptionJpaDao repo;

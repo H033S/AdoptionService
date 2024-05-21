@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA_TEST;
 
 @Repository
-@Profile({JPA, JPA_TEST})
+@Profile({JPA })
 public interface AdoptionJpaDao extends JpaRepository<Adoption, Integer> {
 
     @Query("SELECT a FROM Adoption a JOIN FETCH a.adopter JOIN FETCH a.pet")

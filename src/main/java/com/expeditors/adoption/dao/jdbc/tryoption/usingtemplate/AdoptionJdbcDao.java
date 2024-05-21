@@ -18,7 +18,7 @@ import java.util.List;
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @Repository
-@Profile({JDBC, JDBC_TEST})
+@Profile({JDBC})
 public class AdoptionJdbcDao
         implements BaseDao<Adoption> {
     private final DataSource dataSource;

@@ -4,7 +4,6 @@ import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.dao.jdbc.AdopterSqlQueries;
 import com.expeditors.adoption.dao.jdbc.tryoption.usingtemplate.templates.*;
 import com.expeditors.adoption.domain.entities.Adopter;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +16,7 @@ import java.util.List;
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @Repository
-@Profile({JDBC, JDBC_TEST})
+@Profile({JDBC})
 public class AdopterJdbcDao
         implements BaseDao<Adopter> {
 

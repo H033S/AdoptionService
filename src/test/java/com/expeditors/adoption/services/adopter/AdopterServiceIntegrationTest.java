@@ -11,12 +11,12 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
-@ActiveProfiles(JDBC_TEST)
-class AdopterServiceIntegrationTest_JDBC_TEST extends AdopterServiceIntegrationTest{}
-@ActiveProfiles(JDBC_TEMPLATE_TEST)
-class AdopterServiceIntegrationTest_JDBC_TEMPLATE_TEST extends AdopterServiceIntegrationTest{}
-@ActiveProfiles(JPA_TEST)
-class AdopterServiceIntegrationTest_JPA_TEST extends AdopterServiceIntegrationTest{}
+@ActiveProfiles({JDBC, H2})
+class AdopterServiceIntegrationTest_JDBC extends AdopterServiceIntegrationTest{}
+@ActiveProfiles({JDBC_TEMPLATE, H2})
+class AdopterServiceIntegrationTest_JDBC_TEMPLATE extends AdopterServiceIntegrationTest{}
+@ActiveProfiles({JPA, H2})
+class AdopterServiceIntegrationTest_JPA extends AdopterServiceIntegrationTest{}
 
 
 @SpringBootTest
@@ -51,9 +51,10 @@ public abstract class AdopterServiceIntegrationTest {
     void addEntity_RunSuccessfully_WhenCorrectAdopter(){
 
         var adopter = TestFactory.getAdopterInstance();
+        adopter.setId(0);
         var adopterResult = adopterService.addEntity(adopter);
 
-        Assertions.assertEquals(4, adopterResult.getId());
+        Assertions.assertEquals(3, adopterResult.getId());
     }
 
     @Test

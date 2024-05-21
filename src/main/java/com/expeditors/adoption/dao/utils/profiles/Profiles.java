@@ -8,9 +8,6 @@ public class Profiles {
     public static final String JDBC = "JDBC";
     public static final String JDBC_TEMPLATE = "JDBC_TEMPLATE";
 
-    //TEST
-    public static final String JDBC_TEST = "JDBC_TEST";
-    public static final String JDBC_TEMPLATE_TEST = "JDBC_TEMPLATE_TEST";
-    public static final String JPA_TEST = "JPA_TEST";
-
+    public static final String H2 = "H2";
+    public static final String POSTGRES = "POSTGRES";
 }

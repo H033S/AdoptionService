@@ -13,60 +13,61 @@ import java.time.LocalDate;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
-@ActiveProfiles({JDBC_TEST})
-class PetServiceIntegrationTest__JDBC_TEST extends PetServiceIntegrationTest{}
-@ActiveProfiles({JDBC_TEMPLATE_TEST})
-class PetServiceIntegrationTest__JDBC_TEMPLATE_TEST extends PetServiceIntegrationTest{}
-@ActiveProfiles({JPA_TEST})
-class PetServiceIntegrationTest__JPA_TEST extends PetServiceIntegrationTest{}
+@ActiveProfiles({JDBC, H2})
+class PetServiceIntegrationTest__JDBC extends PetServiceIntegrationTest{}
+@ActiveProfiles({JDBC_TEMPLATE, H2})
+class PetServiceIntegrationTest__JDBC_TEMPLATE extends PetServiceIntegrationTest{}
+@ActiveProfiles({JPA, H2})
+class PetServiceIntegrationTest__JPA extends PetServiceIntegrationTest{}
 
 
-@SpringBootTest
-@Sql(scripts = {"/sql/h2/0-schema.sql", "/sql/h2/1-test-data.sql"})
-public abstract class PetServiceIntegrationTest {
+    @SpringBootTest
+    @Sql(scripts = {"/sql/h2/0-schema.sql", "/sql/h2/1-test-data.sql"})
+    public abstract class PetServiceIntegrationTest {
 
-    @Autowired
-    PetService petService;
+        @Autowired
+        PetService petService;
 
-    @Test
-    void findAll_RunSuccessfully(){
+        @Test
+        void findAll_RunSuccessfully(){
 
-        var pets = petService.getAllEntities();
-        Assertions.assertEquals(4, pets.size());
-    }
+            var pets = petService.getAllEntities();
+            Assertions.assertEquals(4, pets.size());
+        }
 
-    @Test
-    void findById_RunSuccessfully_WhenIdIsFound(){
+        @Test
+        void findById_RunSuccessfully_WhenIdIsFound(){
 
-        var pet = petService.getEntityById(1);
-        Assertions.assertEquals(1, pet.getId());
-    }
+            var pet = petService.getEntityById(1);
+            Assertions.assertEquals(1, pet.getId());
+        }
 
-    @Test
-    void findById_RunSuccessfully_WhenIdIsNotFound(){
+        @Test
+        void findById_RunSuccessfully_WhenIdIsNotFound(){
 
-        var pet = petService.getEntityById(25);
-        Assertions.assertNull(pet);
-    }
+            var pet = petService.getEntityById(25);
+            Assertions.assertNull(pet);
+        }
 
-    @Test
-    void addEntity_RunSuccessfully_WhenCorrectPet(){
+        @Test
+        void addEntity_RunSuccessfully_WhenCorrectPet(){
 
-        var pet = TestFactory.getPetInstance();
-        var petResult = petService.addEntity(pet);
+            var pet = TestFactory.getPetInstance();
+            pet.setId(0);
+            var petResult = petService.addEntity(pet);
 
-        Assertions.assertEquals(5, petResult.getId());
-    }
+            Assertions.assertEquals(5, petResult.getId());
+        }
 
-    @Test
-    void addEntity_ThrowsIllegalArgumentException_WhenPetIsNull(){
+        @Test
+        void addEntity_ThrowsIllegalArgumentException_WhenPetIsNull(){
 
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> petService.addEntity(null));
-    }
+            Assertions.assertThrows(
+                    IllegalArgumentException.class,
+                    () -> petService.addEntity(null));
+        }
 
-    @Test
+        @Test
     void updateEntity_ThrowsIllegalArgumentException_WhenpetIsNull(){
 
         Assertions.assertThrows(

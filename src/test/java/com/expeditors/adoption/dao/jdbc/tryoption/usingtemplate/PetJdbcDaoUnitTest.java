@@ -11,10 +11,10 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEST;
+import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @SpringBootTest
-@ActiveProfiles(JDBC_TEST)
+@ActiveProfiles({JDBC, H2})
 @Sql(scripts = {"/sql/h2/0-schema.sql", "/sql/h2/1-test-data.sql"})
 public class PetJdbcDaoUnitTest {
 

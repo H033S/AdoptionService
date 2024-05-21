@@ -2,20 +2,16 @@ package com.expeditors.adoption.dao.jpa.adapters;
 
 import com.expeditors.adoption.dao.BaseDao;
 import com.expeditors.adoption.dao.jpa.PetJpaDao;
-import com.expeditors.adoption.domain.entities.Adoption;
 import com.expeditors.adoption.domain.entities.Pet;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA_TEST;
 
 @Repository
-@Profile({JPA, JPA_TEST})
+@Profile({JPA })
 public class PetJpaDaoAdapter implements BaseDao<Pet> {
 
     private final PetJpaDao repo;
@@ -49,6 +45,12 @@ public class PetJpaDaoAdapter implements BaseDao<Pet> {
 
     @Override
     public boolean delete(int id) {
+
+        var petWasFound = repo.existsById(id);
+        if(!petWasFound){
+            return false;
+        }
+
         repo.deleteById(id);
         return true;
     }

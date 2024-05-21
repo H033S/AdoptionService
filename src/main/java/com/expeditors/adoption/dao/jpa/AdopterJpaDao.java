@@ -12,11 +12,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JPA_TEST;
 
 @Repository
 @Transactional
-@Profile({JPA, JPA_TEST})
+@Profile({JPA })
 public class AdopterJpaDao implements BaseDao<Adopter> {
 
     @PersistenceContext

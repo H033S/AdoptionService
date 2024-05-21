@@ -8,10 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEMPLATE;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEMPLATE_TEST;
 
 @Repository
-@Profile(value = {JDBC_TEMPLATE, JDBC_TEMPLATE_TEST})
+@Profile(value = {JDBC_TEMPLATE})
 public class AdoptionJdbcDaoTemplate
         implements BaseDao<Adoption> {
     @Override

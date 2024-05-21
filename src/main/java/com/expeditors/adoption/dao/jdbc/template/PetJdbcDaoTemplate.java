@@ -20,10 +20,9 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEMPLATE;
-import static com.expeditors.adoption.dao.utils.profiles.Profiles.JDBC_TEMPLATE_TEST;
 
 @Repository
-@Profile({JDBC_TEMPLATE, JDBC_TEMPLATE_TEST})
+@Profile({JDBC_TEMPLATE})
 public class PetJdbcDaoTemplate
         implements BaseDao<Pet> {
 
