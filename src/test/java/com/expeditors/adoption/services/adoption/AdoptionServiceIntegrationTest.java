@@ -15,8 +15,13 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @ActiveProfiles({JDBC, H2})
 class AdoptionServiceIntegrationTest__JDBC extends AdoptionServiceIntegrationTest{}
+
 @ActiveProfiles({JDBC_TEMPLATE, H2})
 class AdoptionServiceIntegrationTest__JDBC_TEMPLATE extends AdoptionServiceIntegrationTest{}
+
+@ActiveProfiles({JDBC_CLIENT, H2})
+class AdoptionServiceIntegrationTest__JDBC_CLIENT extends AdoptionServiceIntegrationTest{}
+
 @ActiveProfiles({JPA, H2})
 class AdoptionServiceIntegrationTest__JPA extends AdoptionServiceIntegrationTest{}
 

@@ -80,13 +80,6 @@ public class AdopterJdbcDao
     @Override
     public boolean update(Adopter adopter) {
 
-        String sql = """
-        UPDATE ADOPTER SET
-            NAME = ?,
-            PHONE_NUMBER = ?
-        WHERE ID = ?
-        """;
-
         JdbcUpdateTemplate<Adopter> template = new JdbcUpdateTemplate<>(datasource) {
             @Override
             public void prepareStatement(
@@ -98,16 +91,13 @@ public class AdopterJdbcDao
                 pStmt.setInt(3, adopterToUpdate.getId());
             }
         };
-        return template.update(adopter, sql);
+        return template.update(adopter, AdopterSqlQueries.getUpdateQuery());
     }
 
     @Override
     public boolean delete(int id) {
 
-        String sql = """
-        DELETE FROM ADOPTER WHERE ID = ?
-        """;
         JdbcDeleteTemplate template = new JdbcDeleteTemplate(datasource) {};
-        return template.delete(id, sql);
+        return template.delete(id, AdopterSqlQueries.getDeleteQuery());
     }
 }

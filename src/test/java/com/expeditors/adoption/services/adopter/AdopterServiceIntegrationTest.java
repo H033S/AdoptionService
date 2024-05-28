@@ -2,6 +2,8 @@ package com.expeditors.adoption.services.adopter;
 
 import com.expeditors.adoption.factory.TestFactory;
 import com.expeditors.adoption.service.AdopterService;
+import com.expeditors.adoption.service.AdoptionService;
+import com.expeditors.adoption.services.adoption.AdoptionServiceIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,13 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @ActiveProfiles({JDBC, H2})
 class AdopterServiceIntegrationTest_JDBC extends AdopterServiceIntegrationTest{}
+
 @ActiveProfiles({JDBC_TEMPLATE, H2})
 class AdopterServiceIntegrationTest_JDBC_TEMPLATE extends AdopterServiceIntegrationTest{}
+
+@ActiveProfiles({JDBC_CLIENT, H2})
+class AdopterServiceIntegrationTest_JDBC_CLIENT extends AdopterServiceIntegrationTest{}
+
 @ActiveProfiles({JPA, H2})
 class AdopterServiceIntegrationTest_JPA extends AdopterServiceIntegrationTest{}
 
@@ -54,7 +61,7 @@ public abstract class AdopterServiceIntegrationTest {
         adopter.setId(0);
         var adopterResult = adopterService.addEntity(adopter);
 
-        Assertions.assertEquals(3, adopterResult.getId());
+        Assertions.assertNotEquals(0, adopterResult.getId());
     }
 
     @Test

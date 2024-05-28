@@ -260,7 +260,10 @@ public class AdoptionControllerUnitTest {
 
     }
 
-    private void setMocksForServicesThatRequestIdFor(Adoption mockAdoption, Pet mockPet, Adopter mockAdopter) {
+    private void setMocksForServicesThatRequestIdFor(
+            Adoption mockAdoption,
+            Pet mockPet,
+            Adopter mockAdopter) {
 
         Mockito.doReturn(mockAdoption)
                 .when(adoptionService)

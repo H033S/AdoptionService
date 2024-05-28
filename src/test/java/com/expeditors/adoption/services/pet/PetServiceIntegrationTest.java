@@ -15,8 +15,13 @@ import static com.expeditors.adoption.dao.utils.profiles.Profiles.*;
 
 @ActiveProfiles({JDBC, H2})
 class PetServiceIntegrationTest__JDBC extends PetServiceIntegrationTest{}
+
 @ActiveProfiles({JDBC_TEMPLATE, H2})
 class PetServiceIntegrationTest__JDBC_TEMPLATE extends PetServiceIntegrationTest{}
+
+@ActiveProfiles({JDBC_CLIENT, H2})
+class PetServiceIntegrationTest__JDBC_CLIENT extends PetServiceIntegrationTest{}
+
 @ActiveProfiles({JPA, H2})
 class PetServiceIntegrationTest__JPA extends PetServiceIntegrationTest{}
 

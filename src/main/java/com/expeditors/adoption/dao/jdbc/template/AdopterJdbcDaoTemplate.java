@@ -8,6 +8,7 @@ import com.expeditors.adoption.domain.entities.Pet;
 import com.expeditors.adoption.domain.entities.PetBreed;
 import com.expeditors.adoption.domain.entities.PetType;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -43,36 +44,33 @@ public class AdopterJdbcDaoTemplate
         JdbcTemplate template = new JdbcTemplate(dataSource);
         return template.query(
                 AdopterSqlQueries.getFindAllQuery(),
-                new RowMapper<Adopter>() {
-                    @Override
-                    public Adopter mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Adopter(
-                                rs.getInt("id"),
-                                rs.getString("name"),
-                                rs.getString("phone_number")
-                        );
-                    }
-                });
+                (rs, rn) -> new Adopter(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("phone_number")
+                ));
     }
 
     @Override
     public Adopter findById(int id) {
 
         JdbcTemplate template = new JdbcTemplate(dataSource);
-        return template.queryForObject(
-                AdopterSqlQueries.getFindByIdQuery(),
-                new Object[]{},
-                new int[]{id},
-                new RowMapper<Adopter>() {
-                    @Override
-                    public Adopter mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Adopter(
-                                rs.getInt("id"),
-                                rs.getString("name"),
-                                rs.getString("phone_number")
-                        );
-                    }
-                });
+
+        try{
+            return template.queryForObject(
+                    AdopterSqlQueries.getFindByIdQuery(),
+                    (rs, rowNum) -> new Adopter(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("phone_number")
+                    ),
+                    id
+            );
+        }
+        catch (EmptyResultDataAccessException e)
+        {
+            return null;
+        }
     }
 
     @Override
@@ -103,11 +101,31 @@ public class AdopterJdbcDaoTemplate
 
     @Override
     public boolean update(Adopter adopter) {
-        return false;
+
+        JdbcTemplate template = new JdbcTemplate(dataSource);
+        int affectedRows = template.update(con -> {
+
+            PreparedStatement pStmt = con.prepareStatement(AdopterSqlQueries.getUpdateQuery());
+            pStmt.setString(1, adopter.getAdopterName());
+            pStmt.setString(2, adopter.getPhoneNumber());
+            pStmt.setInt(3, adopter.getId());
+            return pStmt;
+        });
+        return affectedRows > 0;
     }
 
     @Override
     public boolean delete(int id) {
-        return false;
+
+        JdbcTemplate template = new JdbcTemplate(dataSource);
+        int rowsAffected = template.update(
+                con -> {
+                    PreparedStatement pStmt = con.prepareStatement(AdopterSqlQueries.getDeleteQuery());
+                    pStmt.setInt(1, id);
+                    return pStmt;
+                }
+        );
+
+        return rowsAffected > 0;
     }
 }
